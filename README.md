@@ -1,46 +1,74 @@
 # AI Collab Skill Playbook
 
-一个面向真实研发协作的 Prompt → Skill → Copilot/Claude 适配示例仓库。
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Template](https://img.shields.io/badge/status-public%20template-blue)](./template/)
+[![Copilot](https://img.shields.io/badge/GitHub%20Copilot-ready-black)](./template/.github/)
+[![Claude Skills](https://img.shields.io/badge/Claude%20Skills-ready-purple)](./template/.claude/skills/)
 
-这个仓库整理的是一套可复用的方法，而不是某个业务系统的私有实现。它把 AI 协作拆成四层：
+[English](./README.en.md) | [简体中文](./README.zh-CN.md)
 
-1. `章程`：定义定位、边界、风险控制和知识沉淀要求
-2. `工作流`：把章程落成团队可执行的标准流程
-3. `Skill`：把稳定工作方法封装成可复用能力
-4. `工具入口`：把 Skill 适配到 GitHub Copilot、Claude 风格运行时和兼容 Prompt
+A public playbook for turning prompts into a governed AI development system with charters, workflows, reusable skills, Copilot routing, evaluation gates, and knowledge sinks.
 
-## 适合谁
+这是一个把“几段 Prompt”升级成“团队可治理 AI 协作体系”的公开样板仓库，包含章程、工作流、Skill 源码、Copilot 适配、评测门禁和知识沉淀方法。
 
-- 想把“几段 prompt”升级成“团队工作体系”的工程团队
-- 想把 Copilot / Claude / Codex 入口统一到一套治理逻辑的人
-- 想解决 AI 长链路任务容易跑偏、不会沉淀、不会验收的问题的人
+## Why This Repo Exists
 
-## 仓库包含什么
+Teams often hit the same ceiling when using AI for development:
 
-- [`docs/`](./docs/)：这套方法怎么设计、怎么公开分享、怎么迁移
-- [`template/`](./template/)：一个可直接复制到项目里的示例包
-- [`template/docs/skills-src/`](./template/docs/skills-src/)：Skill 源码、生成脚本、校验脚本、验收样例
-- [`template/docs/prompts/`](./template/docs/prompts/)：兼容 Prompt 入口
-- `template/.github/`、`template/.claude/skills/`：由 Skill 源码生成的运行产物
+- prompts keep growing, but behavior still drifts
+- implementation happens before planning is confirmed
+- code search degrades into noisy full-repo scanning
+- results stay in chat history instead of becoming reusable knowledge
+- “done” is declared before tests and evaluation gates are actually closed
 
-## 模板结构
+This repo packages one practical answer:
 
-模板包当前保留了一个 “WMS 风格示例命名空间”，方便展示多模块业务项目里的典型做法：
+`charter -> workflow -> skill -> tool entry -> docs sink`
 
-- 核心 Skill：任务治理、代码导航、方案关卡、自动开发编排、链路确认、交付评测门禁
-- 场景 Skill：新功能、排障、Code Review、数据库变更、重构、文档
-- GitHub Copilot 入口：slash prompt + repository/path instructions
-- Claude 风格运行时入口：`.claude/skills/`
+## Architecture
 
-如果你要迁移到自己的项目，通常只需要：
+```mermaid
+flowchart LR
+    A["Charter"] --> B["Workflow"]
+    B --> C["Skill Source"]
+    C --> D["Runtime Artifacts"]
+    D --> E["Copilot / Claude / Prompt Entry"]
+    E --> F["Task Delivery"]
+    F --> G["Evaluation Gate"]
+    G --> H["Docs Sink / Knowledge Base"]
+```
 
-1. 改 `AGENTS.md` 项目上下文
-2. 改 `docs/guides/AI协作研发章程.md`
-3. 改 `docs/prompts/00-department-standards.md` 中的规范来源和目录约定
-4. 改 `docs/skills-src/manifest.yaml` 里的命名空间、提示词描述和生成目标
-5. 重新生成 `.github/` 和 `.claude/skills/`
+## What You Get
 
-## 快速开始
+- A governance layer for AI-assisted engineering
+- A prompt-to-skill migration pattern
+- A reusable `docs/skills-src/` structure
+- Generated runtime targets for `.claude/skills/` and `.github/`
+- A `plan-gate -> auto-dev -> evaluation-gate` delivery path
+- A `docs/tasks/` and `docs/knowledge-base/` sink pattern
+
+## Repo Layout
+
+- [`docs/`](./docs/)
+  Public-facing notes about structure, publishing, and sanitization.
+- [`template/`](./template/)
+  A copyable project template with:
+  - [`template/AGENTS.md`](./template/AGENTS.md)
+  - [`template/docs/guides/`](./template/docs/guides/)
+  - [`template/docs/prompts/`](./template/docs/prompts/)
+  - [`template/docs/skills-src/`](./template/docs/skills-src/)
+  - [`template/.github/`](./template/.github/)
+  - [`template/.claude/skills/`](./template/.claude/skills/)
+
+## Read In This Order
+
+1. [`template/docs/guides/AI协作试运行说明.md`](./template/docs/guides/AI协作试运行说明.md)
+2. [`template/docs/guides/AI协作研发章程.md`](./template/docs/guides/AI协作研发章程.md)
+3. [`template/docs/guides/ai-workflow.md`](./template/docs/guides/ai-workflow.md)
+4. [`template/docs/prompts/README.md`](./template/docs/prompts/README.md)
+5. [`template/docs/skills-src/README.md`](./template/docs/skills-src/README.md)
+
+## Quick Start
 
 ```bash
 cd template
@@ -52,26 +80,31 @@ python3 docs/skills-src/tools/generate_copilot_assets.py
 python3 docs/skills-src/tools/acceptance_check.py
 ```
 
-然后按下面顺序读：
+## Best Fit
 
-1. [`template/docs/guides/AI协作试运行说明.md`](./template/docs/guides/AI协作试运行说明.md)
-2. [`template/docs/guides/AI协作研发章程.md`](./template/docs/guides/AI协作研发章程.md)
-3. [`template/docs/guides/ai-workflow.md`](./template/docs/guides/ai-workflow.md)
-4. [`template/docs/skills-src/README.md`](./template/docs/skills-src/README.md)
+- Engineering teams moving from prompt collections to reusable AI workflows
+- Teams using GitHub Copilot but wanting stronger governance and repeatability
+- Teams experimenting with Claude-style local skills and runtime generation
+- Multi-module or chain-heavy systems that need planning gates and knowledge sinks
 
-## GitHub 发布前建议
+## Public Sharing Notes
 
-- 先看 [`docs/public-sharing-checklist.md`](./docs/public-sharing-checklist.md)
-- 再看 [`docs/repo-structure.md`](./docs/repo-structure.md)
-- 真正准备推远端时，再看 [`docs/publish-to-github.md`](./docs/publish-to-github.md)
-- 确认已经替换掉你的内网链接、真实模块名、内部系统缩写和敏感命令
+- Start with [`docs/public-sharing-checklist.md`](./docs/public-sharing-checklist.md)
+- Then read [`docs/repo-structure.md`](./docs/repo-structure.md)
+- Before pushing your own fork, read [`docs/publish-to-github.md`](./docs/publish-to-github.md)
 
-## 当前定位
+## Language Guides
 
-这是一个第一版的公开整理包，重点是：
+- [README.zh-CN.md](./README.zh-CN.md)
+- [README.en.md](./README.en.md)
 
-- 让别人看懂这套体系为什么这样设计
-- 让别人能把模板复制到自己的仓库试起来
-- 让别人知道 Prompt、Skill、Copilot 入口和验收之间的关系
+## Current Status
 
-它不是一个通用 SaaS，也不是一个“一键自动接入所有仓库”的工具。
+This is a public-first template, not a turnkey SaaS product.
+
+The goal of v1 is simple:
+
+- make the system understandable
+- make the template copyable
+- make the generated runtime artifacts reproducible
+- make planning, delivery, evaluation, and docs sink visibly connected
