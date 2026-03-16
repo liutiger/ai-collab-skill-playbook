@@ -1,0 +1,3 @@
+display_name: Documentation Scene
+short_description: Adds WMS documentation checks for audience, structure, precise references, diagrams, and sink location.
+default_prompt: Use this thin scene skill when a WMS task is writing docs or capturing reusable knowledge, together with the core skills.

@@ -1,0 +1,3 @@
+display_name: GitNexus Code Navigation
+short_description: Enforces the GitNexus-first navigation protocol, impact checks, and anti-degeneration search behavior for WMS code work.
+default_prompt: Use this skill when WMS code understanding or change safety depends on GitNexus-first navigation before broad searching.

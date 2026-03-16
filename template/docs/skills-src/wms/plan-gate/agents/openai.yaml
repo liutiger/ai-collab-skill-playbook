@@ -1,0 +1,3 @@
+display_name: Plan Gate
+short_description: Holds WMS work at goal clarification, context, and minimum-change planning until explicit approval arrives.
+default_prompt: Use this skill when a WMS task should stop at the plan review gate and wait for explicit approval before implementation.

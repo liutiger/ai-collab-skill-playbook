@@ -1,0 +1,21 @@
+{
+  "id": "evaluation-gate-feature-delivery",
+  "title": "功能开发后的评测门禁",
+  "skills": [
+    "wms-task-governance",
+    "auto-dev-orchestrator",
+    "delivery-evaluation-gate",
+    "feature-dev-scene"
+  ],
+  "prompt": "功能已经实现完成，现在请按影响模块执行编译门禁、测试门禁，并输出是否允许写完成标记的结论。",
+  "expectedFocus": [
+    "先明确改动类型和影响模块",
+    "先生成评测计划再执行门禁",
+    "输出 PASS / CONDITIONAL_PASS / BLOCKED / FAIL 结论",
+    "未过门禁时不允许写完成标记"
+  ],
+  "expectedArtifacts": [
+    "artifacts/eval-plan.md",
+    "artifacts/eval-report.md"
+  ]
+}

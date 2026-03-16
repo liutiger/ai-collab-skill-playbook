@@ -1,0 +1,20 @@
+{
+  "id": "code-review-inventory-pr",
+  "title": "PR 审查按严重度列问题",
+  "skills": [
+    "wms-task-governance",
+    "gitnexus-code-navigation",
+    "code-review-scene"
+  ],
+  "prompt": "Review 这段库存调整 PR diff，按严重度优先输出问题，并重点看并发、事务和数据正确性。",
+  "expectedFocus": [
+    "按严重度排序问题",
+    "覆盖正确性、并发、事务和安全",
+    "避免只做泛泛总结",
+    "必要时结合 GitNexus 看影响范围"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-任务名/README.md",
+    "ai-conversations/01-任务启动.md"
+  ]
+}

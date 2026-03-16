@@ -1,0 +1,20 @@
+{
+  "id": "issue-investigation-online-error",
+  "title": "线上异常先排障后结论",
+  "skills": [
+    "wms-task-governance",
+    "gitnexus-code-navigation",
+    "issue-investigation-scene"
+  ],
+  "prompt": "线上出现库存释放 broken pipe 异常，先给我时间线、止血建议、5W 分析和可能的数据补偿方案，不要直接猜根因。",
+  "expectedFocus": [
+    "先梳理时间线和影响范围",
+    "先给止血建议",
+    "按 5W 分析而不是直接拍脑袋",
+    "保留数据补偿与复盘要求"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-[ISSUE]-任务名/README.md",
+    "ai-conversations/01-初步分析.md"
+  ]
+}

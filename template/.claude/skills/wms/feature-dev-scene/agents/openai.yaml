@@ -1,0 +1,3 @@
+display_name: Feature Dev Scene
+short_description: Adds WMS new-feature checks such as layering, Query/Execute split, DTO/Feign impact, and stock-side effects.
+default_prompt: Use this thin scene skill for WMS feature development, together with the core skills for governance, navigation, and orchestration.

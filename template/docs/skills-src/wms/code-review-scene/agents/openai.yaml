@@ -1,0 +1,3 @@
+display_name: Code Review Scene
+short_description: Adds WMS review checks for architecture, correctness, concurrency, security, and maintainability.
+default_prompt: Use this thin scene skill when reviewing WMS code or diffs, together with the core skills.

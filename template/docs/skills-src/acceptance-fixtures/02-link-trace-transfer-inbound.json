@@ -1,0 +1,20 @@
+{
+  "id": "link-trace-transfer-inbound",
+  "title": "调拨入库链路确认与沉淀",
+  "skills": [
+    "wms-task-governance",
+    "gitnexus-code-navigation",
+    "link-trace-and-curation"
+  ],
+  "prompt": "确认调拨入库自动收货这条链路有没有真正落盘、发消息、调用外部系统，并把结果沉淀到 docs。",
+  "expectedFocus": [
+    "明确链路边界和起终点",
+    "列出主链路和关键分支",
+    "区分 DB 写入、MQ、Feign 等副作用",
+    "结果落到 artifacts/link-trace.md 和可复用知识库"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-任务名/README.md",
+    "artifacts/link-trace.md"
+  ]
+}

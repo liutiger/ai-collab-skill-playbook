@@ -1,0 +1,3 @@
+display_name: Database Change Scene
+short_description: Adds WMS schema and SQL checks for linkage impact, lock risk, batching, verification, and rollback.
+default_prompt: Use this thin scene skill for WMS schema or SQL changes, together with the core skills.

@@ -1,0 +1,3 @@
+display_name: Delivery Evaluation Gate
+short_description: Runs or records WMS post-change evaluation gates and decides whether completion is allowed.
+default_prompt: Use this skill when a WMS code, SQL, or config change needs a concrete evaluation gate verdict before completion.

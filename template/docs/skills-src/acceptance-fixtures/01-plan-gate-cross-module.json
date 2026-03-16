@@ -1,0 +1,21 @@
+{
+  "id": "plan-gate-cross-module",
+  "title": "跨模块需求先停在方案确认",
+  "skills": [
+    "wms-task-governance",
+    "gitnexus-code-navigation",
+    "plan-gate",
+    "feature-dev-scene"
+  ],
+  "prompt": "新增库存批量操作类型能力，涉及 example-service 和 companion-sync-service，先帮我出方案，确认后再实现。",
+  "expectedFocus": [
+    "先输出任务理解",
+    "先输出 GitNexus 定位结果",
+    "停在待确认，不进入实现",
+    "给出最小改动方案、风险和回滚思路"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-任务名/README.md",
+    "artifacts/plan-gate.md"
+  ]
+}

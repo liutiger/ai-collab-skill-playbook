@@ -1,0 +1,3 @@
+display_name: Refactoring Scene
+short_description: Adds WMS refactoring checks for risk grading, commit slicing, behavior preservation, and rollback design.
+default_prompt: Use this thin scene skill when a WMS task is refactoring or safe structural cleanup, together with the core skills.

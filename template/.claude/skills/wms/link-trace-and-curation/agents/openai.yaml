@@ -1,0 +1,3 @@
+display_name: Link Trace and Curation
+short_description: Confirms the real WMS execution chain, control points, and side effects, then sinks the result into docs.
+default_prompt: Use this skill when a WMS task needs real chain tracing, side-effect confirmation, and knowledge capture in docs.

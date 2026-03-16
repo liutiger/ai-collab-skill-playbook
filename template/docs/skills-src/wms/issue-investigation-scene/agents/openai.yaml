@@ -1,0 +1,3 @@
+display_name: Issue Investigation Scene
+short_description: Adds WMS incident checks such as timeline, severity, containment, 5W root cause, and data-fix planning.
+default_prompt: Use this thin scene skill when a WMS task is incident investigation or hotfix design, together with the core skills.
