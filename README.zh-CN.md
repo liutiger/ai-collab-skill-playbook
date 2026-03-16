@@ -2,6 +2,8 @@
 
 这是一个把零散 Prompt 升级成“可治理 AI 研发协作体系”的公开模板仓库。
 
+![架构封面](./docs/assets/architecture-cover.svg)
+
 ## 它解决什么问题
 
 - Prompt 越写越多，但 AI 还是会跑偏
@@ -30,6 +32,16 @@
 plan-gate -> auto-dev -> evaluation-gate -> docs sink
 ```
 
+## 一眼看懂
+
+| 层级 | 职责 |
+|---|---|
+| 章程 | 定义权责、边界和风险控制 |
+| 工作流 | 把治理规则落成协作流程 |
+| Skill | 固化可复用工作方法 |
+| 运行产物 | 生成给 Copilot / Claude 使用的入口 |
+| 文档沉淀 | 保存任务过程和长期知识 |
+
 ## 建议阅读顺序
 
 1. [`template/docs/guides/AI协作试运行说明.md`](./template/docs/guides/AI协作试运行说明.md)
@@ -45,6 +57,23 @@ plan-gate -> auto-dev -> evaluation-gate -> docs sink
 - `template/.github/`：生成后的 Copilot 指令和 slash prompt
 - `template/docs/prompts/`：兼容 Prompt 入口
 - `template/docs/tasks/`：任务沉淀目录和模板
+
+## 为什么它不只是 Prompt 合集
+
+- 稳定方法沉到 Skill，不继续堆长 Prompt
+- 高风险任务先过方案关卡
+- 代码交付前还有评测门禁
+- 任务结果必须进文档沉淀，而不是留在聊天记录里
+- 一套源码同时生成 Copilot 和 Claude 风格入口
+
+## 5 分钟试一下
+
+```bash
+cd template
+python3 docs/skills-src/tools/validate_skills.py
+python3 docs/skills-src/tools/validate_copilot_assets.py
+python3 docs/skills-src/tools/acceptance_check.py
+```
 
 ## 如果你要迁移到自己的项目
 
@@ -62,6 +91,15 @@ cd template
 python3 docs/skills-src/tools/generate_claude_skills.py
 python3 docs/skills-src/tools/generate_copilot_assets.py
 ```
+
+## 推荐迁移顺序
+
+1. 本地化 `AGENTS.md`
+2. 重写 AI 协作章程
+3. 重写 `00-department-standards.md`
+4. 改 `manifest.yaml`
+5. 重新生成 `.github/` 和 `.claude/skills/`
+6. 先从 `plan-gate` 小范围试运行，再逐步扩大
 
 ## 发布前建议
 

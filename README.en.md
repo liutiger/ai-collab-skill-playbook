@@ -2,6 +2,8 @@
 
 A public template for turning scattered prompts into a governed AI engineering workflow.
 
+![Architecture cover](./docs/assets/architecture-cover.svg)
+
 ## What It Covers
 
 - a charter that defines boundaries and control rules
@@ -16,6 +18,16 @@ A public template for turning scattered prompts into a governed AI engineering w
 plan-gate -> auto-dev -> evaluation-gate -> docs sink
 ```
 
+## At A Glance
+
+| Layer | Responsibility |
+|---|---|
+| Charter | Defines authority, boundaries, and risk rules |
+| Workflow | Turns governance into a usable process |
+| Skill | Encodes reusable working methods |
+| Runtime | Generates Copilot and Claude-facing artifacts |
+| Docs Sink | Preserves task outcomes and reusable knowledge |
+
 ## Key Ideas
 
 1. Prompt is the task entry.
@@ -23,6 +35,13 @@ plan-gate -> auto-dev -> evaluation-gate -> docs sink
 3. Workflow is the controlled execution loop.
 4. Charter is the top-level governance layer.
 5. Completion requires evaluation and documentation, not just code changes.
+
+## Why This Is More Than A Prompt Pack
+
+- It keeps stable method in skills, not in ever-growing prompt files.
+- It introduces explicit plan and evaluation gates.
+- It treats documentation as part of delivery, not optional cleanup.
+- It supports both GitHub Copilot and Claude-style runtime artifacts from one source.
 
 ## Start Here
 
@@ -38,6 +57,15 @@ plan-gate -> auto-dev -> evaluation-gate -> docs sink
 - `template/.github/`: generated Copilot instructions and prompt files
 - `template/docs/prompts/`: compatibility entry layer
 - `template/docs/tasks/`: task sink and templates
+
+## Quick Trial
+
+```bash
+cd template
+python3 docs/skills-src/tools/validate_skills.py
+python3 docs/skills-src/tools/validate_copilot_assets.py
+python3 docs/skills-src/tools/acceptance_check.py
+```
 
 ## If You Want To Reuse It
 
@@ -55,6 +83,15 @@ cd template
 python3 docs/skills-src/tools/generate_claude_skills.py
 python3 docs/skills-src/tools/generate_copilot_assets.py
 ```
+
+## Adoption Sequence
+
+1. localize `AGENTS.md`
+2. rewrite the charter
+3. rewrite `00-department-standards.md`
+4. adapt `manifest.yaml`
+5. regenerate runtime targets
+6. pilot with `plan-gate` before full `auto-dev`
 
 ## Public Release Notes
 

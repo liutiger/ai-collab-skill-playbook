@@ -7,6 +7,8 @@
 
 [English](./README.en.md) | [简体中文](./README.zh-CN.md)
 
+![Architecture cover](./docs/assets/architecture-cover.svg)
+
 A public playbook for turning prompts into a governed AI development system with charters, workflows, reusable skills, Copilot routing, evaluation gates, and knowledge sinks.
 
 这是一个把“几段 Prompt”升级成“团队可治理 AI 协作体系”的公开样板仓库，包含章程、工作流、Skill 源码、Copilot 适配、评测门禁和知识沉淀方法。
@@ -25,6 +27,16 @@ This repo packages one practical answer:
 
 `charter -> workflow -> skill -> tool entry -> docs sink`
 
+## At A Glance
+
+| Layer | Responsibility | Example in this repo |
+|---|---|---|
+| Charter | Define boundaries, authority, control rules | `template/docs/guides/AI协作研发章程.md` |
+| Workflow | Turn rules into an execution loop | `template/docs/guides/ai-workflow.md` |
+| Skills | Encode reusable methods and scripts | `template/docs/skills-src/` |
+| Runtime | Generate tool-facing artifacts | `template/.github/`, `template/.claude/skills/` |
+| Delivery | Enforce planning, execution, evaluation, sink | `plan-gate -> auto-dev -> evaluation-gate` |
+
 ## Architecture
 
 ```mermaid
@@ -38,6 +50,14 @@ flowchart LR
     G --> H["Docs Sink / Knowledge Base"]
 ```
 
+## Why It Feels Different From A Prompt Library
+
+- It separates governance from execution.
+- It treats skills as reusable methods, not just longer prompts.
+- It keeps prompt files thin and pushes stable logic into source-controlled skills.
+- It routes risky work through explicit planning and evaluation gates.
+- It assumes results should land in docs, not disappear into chat history.
+
 ## What You Get
 
 - A governance layer for AI-assisted engineering
@@ -46,6 +66,23 @@ flowchart LR
 - Generated runtime targets for `.claude/skills/` and `.github/`
 - A `plan-gate -> auto-dev -> evaluation-gate` delivery path
 - A `docs/tasks/` and `docs/knowledge-base/` sink pattern
+
+## Try It In 5 Minutes
+
+```bash
+git clone https://github.com/liutiger/ai-collab-skill-playbook.git
+cd ai-collab-skill-playbook/template
+
+python3 docs/skills-src/tools/validate_skills.py
+python3 docs/skills-src/tools/validate_copilot_assets.py
+python3 docs/skills-src/tools/acceptance_check.py
+```
+
+Then open these in order:
+
+1. `template/docs/guides/AI协作试运行说明.md`
+2. `template/docs/guides/AI协作研发章程.md`
+3. `template/docs/skills-src/README.md`
 
 ## Repo Layout
 
@@ -68,24 +105,21 @@ flowchart LR
 4. [`template/docs/prompts/README.md`](./template/docs/prompts/README.md)
 5. [`template/docs/skills-src/README.md`](./template/docs/skills-src/README.md)
 
-## Quick Start
-
-```bash
-cd template
-
-python3 docs/skills-src/tools/validate_skills.py
-python3 docs/skills-src/tools/validate_copilot_assets.py
-python3 docs/skills-src/tools/generate_claude_skills.py
-python3 docs/skills-src/tools/generate_copilot_assets.py
-python3 docs/skills-src/tools/acceptance_check.py
-```
-
 ## Best Fit
 
 - Engineering teams moving from prompt collections to reusable AI workflows
 - Teams using GitHub Copilot but wanting stronger governance and repeatability
 - Teams experimenting with Claude-style local skills and runtime generation
 - Multi-module or chain-heavy systems that need planning gates and knowledge sinks
+
+## Adoption Path
+
+1. Copy `template/` into your own repo.
+2. Rewrite `AGENTS.md` with your real project context.
+3. Rewrite the charter and `00-department-standards.md`.
+4. Update `docs/skills-src/manifest.yaml`.
+5. Regenerate `.github/` and `.claude/skills/`.
+6. Pilot with `plan-gate` first, then add `auto-dev` and `evaluation-gate`.
 
 ## Public Sharing Notes
 

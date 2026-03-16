@@ -1,0 +1,114 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="48" x2="1184" y2="656" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4F1E8"/>
+      <stop offset="0.52" stop-color="#E7EFE7"/>
+      <stop offset="1" stop-color="#E6EEF9"/>
+    </linearGradient>
+    <linearGradient id="cardA" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1F4D3E"/>
+      <stop offset="1" stop-color="#356B58"/>
+    </linearGradient>
+    <linearGradient id="cardB" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#9C4A2B"/>
+      <stop offset="1" stop-color="#C36A42"/>
+    </linearGradient>
+    <linearGradient id="cardC" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#224B7A"/>
+      <stop offset="1" stop-color="#3A6A9B"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#102020" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bg)"/>
+  <circle cx="110" cy="104" r="72" fill="#D77E5C" fill-opacity="0.18"/>
+  <circle cx="1184" cy="616" r="92" fill="#5B84B8" fill-opacity="0.18"/>
+  <circle cx="1128" cy="118" r="48" fill="#5E9175" fill-opacity="0.22"/>
+
+  <text x="88" y="118" fill="#1C1C1C" font-family="Georgia, serif" font-size="48" font-weight="700">
+    AI Collab Skill Playbook
+  </text>
+  <text x="88" y="162" fill="#555555" font-family="Helvetica, Arial, sans-serif" font-size="23">
+    Turn growing prompt piles into a governed workflow with skills, gates, routing, and docs sinks.
+  </text>
+
+  <g filter="url(#shadow)">
+    <rect x="88" y="232" width="326" height="206" rx="28" fill="url(#cardA)"/>
+    <rect x="477" y="232" width="326" height="206" rx="28" fill="url(#cardB)"/>
+    <rect x="866" y="232" width="326" height="206" rx="28" fill="url(#cardC)"/>
+  </g>
+
+  <text x="120" y="286" fill="white" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700">
+    GOVERNANCE
+  </text>
+  <text x="120" y="332" fill="white" font-family="Georgia, serif" font-size="36" font-weight="700">
+    Charter
+  </text>
+  <text x="120" y="372" fill="#EAF4EE" font-family="Helvetica, Arial, sans-serif" font-size="22">
+    Workflow
+  </text>
+  <text x="120" y="410" fill="#D5E8DD" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    Boundaries, roles, risk control,
+  </text>
+  <text x="120" y="438" fill="#D5E8DD" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    and knowledge sink rules.
+  </text>
+
+  <text x="509" y="286" fill="white" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700">
+    EXECUTION
+  </text>
+  <text x="509" y="332" fill="white" font-family="Georgia, serif" font-size="36" font-weight="700">
+    Skill Source
+  </text>
+  <text x="509" y="372" fill="#FFF0EA" font-family="Helvetica, Arial, sans-serif" font-size="22">
+    Plan Gate -> Auto Dev
+  </text>
+  <text x="509" y="410" fill="#FFE1D6" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    Reusable methods, thin scene
+  </text>
+  <text x="509" y="438" fill="#FFE1D6" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    prompts, and runtime generation.
+  </text>
+
+  <text x="898" y="286" fill="white" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700">
+    DELIVERY
+  </text>
+  <text x="898" y="332" fill="white" font-family="Georgia, serif" font-size="36" font-weight="700">
+    Eval Gate
+  </text>
+  <text x="898" y="372" fill="#E8F1FF" font-family="Helvetica, Arial, sans-serif" font-size="22">
+    Docs Sink + Runtime Targets
+  </text>
+  <text x="898" y="410" fill="#D6E5F7" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    Copilot routing, Claude skills,
+  </text>
+  <text x="898" y="438" fill="#D6E5F7" font-family="Helvetica, Arial, sans-serif" font-size="19">
+    acceptance gates, and task records.
+  </text>
+
+  <path d="M414 336H458" stroke="#805041" stroke-width="8" stroke-linecap="round"/>
+  <path d="M803 336H847" stroke="#4E6583" stroke-width="8" stroke-linecap="round"/>
+  <path d="M448 320L472 336L448 352" fill="none" stroke="#805041" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M837 320L861 336L837 352" fill="none" stroke="#4E6583" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g>
+    <rect x="92" y="518" width="1096" height="114" rx="28" fill="#111111" fill-opacity="0.92"/>
+    <text x="132" y="568" fill="#F5F5F5" font-family="Helvetica, Arial, sans-serif" font-size="19">
+      Prompt libraries drift.
+    </text>
+    <text x="333" y="568" fill="#F5F5F5" font-family="Helvetica, Arial, sans-serif" font-size="19">
+      Skills stabilize method.
+    </text>
+    <text x="545" y="568" fill="#F5F5F5" font-family="Helvetica, Arial, sans-serif" font-size="19">
+      Gates control risk.
+    </text>
+    <text x="709" y="568" fill="#F5F5F5" font-family="Helvetica, Arial, sans-serif" font-size="19">
+      Docs preserve team memory.
+    </text>
+    <text x="132" y="608" fill="#B8D4C3" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700">
+      charter -> workflow -> skill -> runtime -> delivery -> evaluation -> knowledge
+    </text>
+  </g>
+</svg>
