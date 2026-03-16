@@ -49,6 +49,7 @@ gh repo create <your-repo-name> --public --source=. --remote=origin --push
 - `template/` 需要按接入方项目重写
 - `AGENTS.md`、章程和 00 号 Prompt 一定要本地化
 - `.github/` 和 `.claude/skills/` 由 `docs/skills-src/` 生成
+- GitHub 的 Social preview 可直接使用 `docs/assets/github-social-preview.png`
 
 ## 5. 第一版不要追求完美
 
