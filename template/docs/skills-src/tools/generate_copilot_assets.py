@@ -110,6 +110,21 @@ def load_inventory(target_root: Path, inventory_rel: str) -> list[str]:
     return [item for item in managed_paths if isinstance(item, str)]
 
 
+def discover_generated_paths(target_root: Path) -> list[str]:
+    discovered: set[str] = set()
+    for directory_name in ("prompts", "instructions"):
+        directory = target_root / directory_name
+        if not directory.exists():
+            continue
+        for path in directory.rglob("*"):
+            if path.is_file():
+                discovered.add(str(path.relative_to(target_root)))
+    repo_instructions = target_root / "copilot-instructions.md"
+    if repo_instructions.exists():
+        discovered.add(str(repo_instructions.relative_to(target_root)))
+    return sorted(discovered)
+
+
 def compare(expected: dict[str, bytes], target_root: Path, inventory_rel: str) -> tuple[list[str], list[str], list[str]]:
     missing: list[str] = []
     changed: list[str] = []
@@ -123,9 +138,10 @@ def compare(expected: dict[str, bytes], target_root: Path, inventory_rel: str) -
         if path.read_bytes() != expected_bytes:
             changed.append(rel)
 
-    previous_managed = load_inventory(target_root, inventory_rel)
+    previous_managed = set(load_inventory(target_root, inventory_rel))
+    discovered_paths = set(discover_generated_paths(target_root))
     expected_keys = set(expected)
-    for rel in previous_managed:
+    for rel in sorted(previous_managed | discovered_paths):
         if rel not in expected_keys and (target_root / rel).exists():
             stale.append(rel)
 
@@ -136,6 +152,8 @@ def sync(expected: dict[str, bytes], target_root: Path, inventory_rel: str, clea
     created: list[str] = []
     updated: list[str] = []
     removed: list[str] = []
+    previous_managed = set(load_inventory(target_root, inventory_rel))
+    discovered_paths = set(discover_generated_paths(target_root))
 
     for rel, data in expected.items():
         path = target_root / rel
@@ -149,7 +167,7 @@ def sync(expected: dict[str, bytes], target_root: Path, inventory_rel: str, clea
             updated.append(rel)
 
     if clean_stale:
-        for rel in load_inventory(target_root, inventory_rel):
+        for rel in sorted(previous_managed | discovered_paths):
             if rel in expected:
                 continue
             path = target_root / rel

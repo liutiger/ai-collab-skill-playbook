@@ -129,13 +129,22 @@ def main() -> int:
             "repository instructions anchored to charter",
         )
     )
+    scene_router_path = copilot_target_root / "prompts/wms-scene-router.prompt.md"
+    scene_router_text = scene_router_path.read_text(encoding="utf-8") if scene_router_path.exists() else ""
+    checks.append(
+        (
+            "copilot_scene_router_guard",
+            "主场景" in scene_router_text and "次场景" in scene_router_text and "/wms-plan-gate" in scene_router_text,
+            "scene-router prompt selects one primary scene and routes risky work to plan gate",
+        )
+    )
     auto_dev_path = copilot_target_root / "prompts/wms-auto-dev.prompt.md"
     auto_dev_text = auto_dev_path.read_text(encoding="utf-8") if auto_dev_path.exists() else ""
     checks.append(
         (
             "copilot_auto_dev_scene_guard",
-            "章程标准场景" in auto_dev_text and "高风险条件" in auto_dev_text and "待人工确认后再实现" in auto_dev_text,
-            "auto-dev prompt enforces scene selection and plan gate",
+            "11-scene-router.md" in auto_dev_text and "高风险条件" in auto_dev_text and "待人工确认后再实现" in auto_dev_text,
+            "auto-dev prompt enforces scene routing and plan gate",
         )
     )
     plan_gate_path = copilot_target_root / "prompts/wms-plan-gate.prompt.md"
@@ -143,17 +152,8 @@ def main() -> int:
     checks.append(
         (
             "copilot_plan_gate_scene_guard",
-            "章程标准场景" in plan_gate_text and "停在待确认" in plan_gate_text and "高风险条件" in plan_gate_text,
-            "plan-gate prompt enforces scene selection and hold",
-        )
-    )
-    feature_dev_path = copilot_target_root / "prompts/wms-feature-dev.prompt.md"
-    feature_dev_text = feature_dev_path.read_text(encoding="utf-8") if feature_dev_path.exists() else ""
-    checks.append(
-        (
-            "copilot_feature_dev_risk_guard",
-            "高风险条件" in feature_dev_text and "plan-gate 风格" in feature_dev_text,
-            "feature-dev prompt redirects risky tasks to plan gate",
+            "11-scene-router.md" in plan_gate_text and "停在待确认" in plan_gate_text and "高风险条件" in plan_gate_text,
+            "plan-gate prompt enforces scene routing and hold",
         )
     )
     evaluation_gate_path = copilot_target_root / "prompts/wms-evaluation-gate.prompt.md"

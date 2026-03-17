@@ -1,140 +1,82 @@
-# 提示词 06 — 文档编写
+# 提示词 06 — 文档编写场景检查包
 
-> 对话开头引用 `#file:docs/prompts/06-documentation.md`，然后描述要写什么文档。
-> 前置步骤（curl wiki + 创建目录 + 检查状态）已由 00 完成。
+> 对话开头可引用 `#file:docs/prompts/06-documentation.md`。
+> 更推荐先走 `#file:docs/prompts/11-scene-router.md` 判定场景，再决定是否需要叠加 `09-plan-gate.md`。
 >
 > **兼容入口**：本场景的权威工作法以 `documentation-scene` 为准。
-> 必须配合以下 Core Skill 使用：
-> - `wms-task-governance`
-> - `gitnexus-code-navigation`
-> - `auto-dev-orchestrator`
+> 这是场景检查包，不承担完整共性流程。
 
 ---
 
-## 角色
+## 何时使用
 
-你不是单一写作者，而是一个以高质量知识沉淀为目标的多角色文档小组。默认按以下角色顺序协作：
+- 目标是产出文档、流程说明、知识沉淀、排障说明、架构说明
+- 需要先明确读者、文档类型、写入位置和证据来源
+- 重点是“写准、写到正确位置、可复用”
 
-1. **Audience Planner** — 明确读者是谁、他们要解决什么问题
-2. **Context Analyst** — 用 GitNexus 和代码上下文确认真实流程与边界
-3. **Structure Designer** — 设计文档结构、图表、章节顺序
-4. **Writer** — 写出结构化正文、图、表格和关键代码引用
-5. **Technical Verifier** — 核对类名、方法名、路径、流程和异常分支是否准确
-6. **Knowledge Curator** — 判断写到 tasks、guides、knowledge-base 还是 reports
+## 不用于
 
-即使没有叠加 `07-auto-dev-orchestration.md`，也应按上述阶段思考和输出。该 Prompt 仅保留文档场景的专项检查，不再承担完整共性流程。
-
----
-
-## 写文档前的 GitNexus 用法
-
-- 先 `npx gitnexus query "<业务词/流程名/接口名>"` 找到相关流程和模块
-- 再 `npx gitnexus context "<关键符号>"` 确认调用链、上下游和参与流程
-- 只有需要补充类名、SQL、配置项原文时，再用 `rg`
+- 只是临时聊天总结，不打算落盘
+- 实际是链路确认：优先 `08-link-confirmation.md`
+- 实际是实现任务：先走 `09-plan-gate.md` 或 `07-auto-dev-orchestration.md`
 
 ---
 
-## 文档类型与存放路径
+## 场景判定信号
 
-| 文档类型 | 路径 | 已有文件处理 |
-|---------|------|-------------|
-| 业务流程 | `knowledge-base/business-flows/{模块}/` | 追加，不覆盖 |
-| 架构设计 | `knowledge-base/architecture/` | 追加 |
-| API 接口 | `knowledge-base/api/` | 追加 |
-| 数据库表结构 | `knowledge-base/database/` | 追加 |
-| 开发指南 | `docs/guides/` | 新建或更新 |
-| 任务开发记录 | `docs/tasks/{年}/{MM}-{任务名}/README.md` | 新建 |
-| AI 对话记录 | `docs/tasks/{年}/{MM}-{任务名}/ai-conversations/` | 新建 |
-| 业务洞察 | `docs/tasks/{年}/{MM}-{任务名}/business-insights.md` | 新建 |
-| 问题复盘 | `docs/tasks/{年}/{MM}-[ISSUE]-{描述}/` | 新建 |
-| 分析报告 | `docs/reports/` | 新建 |
+- 常见用户表达：`补一份文档`、`沉淀知识`、`写流程说明`、`整理成指南`
+- 常见产出：guide、knowledge-base、task README、复盘文档、流程图
 
 ---
 
-## 文档结构模板
+## 专项检查重点
 
-### 业务流程文档
-```markdown
-# {业务名称} 流程说明
+### 1. 读者视角
 
-## 背景
-{为什么需要，解决什么问题}
+- 这份文档给谁看
+- 读者要完成什么动作
+- 读完后能不能独立操作或排查
 
-## 流程概览
-{PlantUML 时序图}
+### 2. 证据链
 
-## 详细步骤
-### Step 1：{步骤名}
-- 触发条件：
-- 执行内容：
-- 涉及代码：`ClassName.methodName()`
-- 关键字段：
+- 类名、方法名、接口、表、配置、流程图都来自真实代码或真实接口
+- 不凭印象补业务流程
 
-## 异常情况处理
-| 异常场景 | 处理方式 | 排查入口 |
-|---------|---------|---------|
+### 3. 写入位置
 
-## 相关表
-| 表名 | 用途 |
-|-----|-----|
+- `docs/tasks/`
+- `docs/guides/`
+- `docs/knowledge-base/`
+- `docs/reports/`
 
-## 注意事项
-```
+### 4. 表达质量
 
-### PlantUML 时序图（流程文档标配）
-```plantuml
-@startuml
-title {流程名称}
-actor 用户
-participant "example-web\n(Controller)" as Web
-participant "example-service\n(ServiceImpl)" as Service
-database "MySQL" as DB
-queue "RabbitMQ/RocketMQ" as MQ
-
-用户 -> Web: POST /xxx/create
-Web -> Service: createXxx(param)
-Service -> DB: INSERT INTO storehouse_xxx
-Service -> MQ: 发送消息
-Service --> Web: XxxResult
-Web --> 用户: 成功
-@enduml
-```
+- 结构清晰
+- 流程类文档优先带 Mermaid / PlantUML
+- 已有文档默认追加或更新，不盲目覆盖
 
 ---
 
-## 质量标准
+## 默认产出物
 
-**✅ 达标**：读完能独立操作/排查、代码有类名/方法名/路径、异常场景有处理、有时间和作者
-
-**❌ 不达标**：只说"参见代码"不说哪段、只有 Happy Path、过时信息无标注、长篇无结构
-
----
-
-## 输出要求
-
-1. **标题和版本信息**（作者、日期）
-2. **结构化正文**（标题层次、表格、代码块）
-3. **PlantUML 图**（流程类必须有）
-4. **直接写入目标文件**，不让用户复制粘贴
+- 目标文档本身
+- 关联任务的 `README.md`
+- `knowledge-base/` 或 `guides/` 中的新增 / 更新内容
 
 ---
 
-## 场景专属落盘
+## 推荐组合
 
-| 产出物 | 路径 |
-|--------|------|
-| 目标文档 | 按上方「文档类型与存放路径」表写入对应位置 |
-| 流程类文档含 PlantUML | 与文档同目录或嵌入文档 |
-| 新发现的业务知识 | `knowledge-base/{对应子目录}/`（追加） |
+- 先确认写什么、写给谁：`00 + 11 + 09 + 06`
+- 直接写文档并落盘：`00 + 11 + 07 + 06`
+- 涉及真实链路梳理：可叠加 `08`
 
 ---
 
-## ✅ 完成自检（逐项核对，缺一项 = 未完成）
+## 场景自检
 
-1. [ ] 文档已写入正确的目标路径
-2. [ ] README.md 末尾有完成标记（关联任务时，格式见 00）
-3. [ ] business-insights.md 已填写（关联任务时，格式见 00）
-4. [ ] ai-conversations/ 至少 1 个文件（关联任务时，格式见 00）
-5. [ ] 已有文件是追加非覆盖
-6. [ ] 关键流程/类的定位优先使用了 GitNexus
-7. [ ] 完成标记含精确到秒的时间 + 提交人（格式见 00）
+1. [ ] 已明确读者、文档类型和写入目标位置
+2. [ ] 关键流程和结论基于真实代码证据
+3. [ ] 没把“链路确认”与“文档编写”混成一件事
+4. [ ] 已有内容默认是更新或追加，而不是粗暴覆盖
+5. [ ] 文档会真正写入 `docs/`，不是只留在聊天框

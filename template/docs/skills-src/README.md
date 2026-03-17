@@ -52,6 +52,7 @@ docs/skills-src/
 - Copilot 运行产物也由 `docs/skills-src/` 生成，不要直接手改 `.github/copilot-instructions.md`、`.github/instructions/`、`.github/prompts/`
 - `docs/prompts/00~10` 保留为兼容入口，不再作为唯一事实来源
 - Core Skill 负责稳定工作方法，Scene Skill 只保留场景专项检查点
+- Prompt 层默认收敛为：`11-scene-router + 01~06 场景检查包 + 07/08/09/10 阶段入口`
 - 若 Skill / Copilot 适配与 `docs/guides/AI协作研发章程.md` 冲突，以章程为准
 
 ## 防串扰规则
@@ -93,21 +94,15 @@ docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
 
 生成 Copilot 运行产物后，可在 VS Code Copilot Chat 中直接使用：
 
+- `/wms-scene-router`
 - `/wms-plan-gate`
-- `/wms-feature-plan`
 - `/wms-auto-dev`
-- `/wms-feature-dev`
 - `/wms-evaluation-gate`
-- `/wms-issue-investigation`
-- `/wms-code-review`
-- `/wms-database-change`
-- `/wms-refactoring`
-- `/wms-documentation`
 - `/wms-link-trace`
 
 使用建议：
 
-- 场景明确时，优先用对应场景型 slash prompt
+- 先用 `/wms-scene-router` 分场景，再进入阶段入口
 - 场景不清或跨场景时，优先用 `/wms-plan-gate`
 - 只有已满足章程中的人工确认要求后，再进入 `/wms-auto-dev`
 - 涉及代码 / SQL / 配置改动时，完成前补用 `/wms-evaluation-gate`
@@ -124,8 +119,9 @@ docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
 
 第一版最重要的不是“自动触发多聪明”，而是以下 3 件事稳定：
 
-- 不清楚时先走 `/wms-plan-gate`
-- 确认后再进入 `/wms-auto-dev` 或具体场景 prompt
+- 不清楚时先走 `/wms-scene-router`
+- 高风险或边界不清时再进入 `/wms-plan-gate`
+- 确认后再进入 `/wms-auto-dev`
 - 代码改完后补跑 `/wms-evaluation-gate`
 - 关键结论沉淀到 `docs/tasks/`
 

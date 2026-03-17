@@ -4,15 +4,9 @@
     "instructions/docs-tasks.instructions.md",
     "instructions/wms-java.instructions.md",
     "prompts/wms-auto-dev.prompt.md",
-    "prompts/wms-code-review.prompt.md",
-    "prompts/wms-database-change.prompt.md",
-    "prompts/wms-documentation.prompt.md",
     "prompts/wms-evaluation-gate.prompt.md",
-    "prompts/wms-feature-dev.prompt.md",
-    "prompts/wms-feature-plan.prompt.md",
-    "prompts/wms-issue-investigation.prompt.md",
     "prompts/wms-link-trace.prompt.md",
     "prompts/wms-plan-gate.prompt.md",
-    "prompts/wms-refactoring.prompt.md"
+    "prompts/wms-scene-router.prompt.md"
   ]
 }

@@ -117,18 +117,19 @@
 
 | 任务类型 | 引用命令 |
 |---------|---------|
-| 新功能开发 | `#file:docs/prompts/01-feature-dev.md` |
-| 线上问题排查 | `#file:docs/prompts/02-issue-investigation.md` |
-| 代码审查 | `#file:docs/prompts/03-code-review.md` |
-| 数据库变更 | `#file:docs/prompts/04-database-change.md` |
-| 重构优化 | `#file:docs/prompts/05-refactoring.md` |
-| 文档编写 | `#file:docs/prompts/06-documentation.md` |
+| 场景路由入口 | `#file:docs/prompts/11-scene-router.md` |
+| 新功能开发检查包 | `#file:docs/prompts/01-feature-dev.md` |
+| 线上问题排查检查包 | `#file:docs/prompts/02-issue-investigation.md` |
+| 代码审查检查包 | `#file:docs/prompts/03-code-review.md` |
+| 数据库变更检查包 | `#file:docs/prompts/04-database-change.md` |
+| 重构优化检查包 | `#file:docs/prompts/05-refactoring.md` |
+| 文档编写检查包 | `#file:docs/prompts/06-documentation.md` |
 | 多角色自动开发编排 | `#file:docs/prompts/07-auto-dev-orchestration.md` |
 | 链路确认 / 知识沉淀 | `#file:docs/prompts/08-link-confirmation.md` |
 | 方案核对 / 实施前确认 | `#file:docs/prompts/09-plan-gate.md` |
 | 自动评测 / 交付验收 | `#file:docs/prompts/10-evaluation-gate.md` |
 
-> `01~10` 都已经内置了轻量多角色编排；`07` 用于把分析、实现、验证、落盘进一步收紧成完整闭环；`09` 用于在实施前增加方案确认关卡；`10` 用于把“建议怎么测”升级为“实际交付门禁”。
+> `11` 先负责场景路由；`01~06` 已瘦身为场景检查包；`07` 用于把分析、实现、验证、落盘进一步收紧成完整闭环；`09` 用于在实施前增加方案确认关卡；`10` 用于把“建议怎么测”升级为“实际交付门禁”。
 
 ### Skill 层 — 权威工作方法
 
@@ -165,7 +166,7 @@ Skill 体系是 Prompt 兼容层之上的权威工作方法：
 
 ```
 #file:docs/prompts/00-department-standards.md
-#file:docs/prompts/01-feature-dev.md
+#file:docs/prompts/11-scene-router.md
 
 [任务描述]
 ```
@@ -174,6 +175,7 @@ Skill 体系是 Prompt 兼容层之上的权威工作方法：
 
 ```
 #file:docs/prompts/00-department-standards.md
+#file:docs/prompts/11-scene-router.md
 #file:docs/prompts/07-auto-dev-orchestration.md
 #file:docs/prompts/01-feature-dev.md
 
@@ -186,6 +188,7 @@ Skill 体系是 Prompt 兼容层之上的权威工作方法：
 
 ```
 #file:docs/prompts/00-department-standards.md
+#file:docs/prompts/11-scene-router.md
 #file:docs/prompts/09-plan-gate.md
 #file:docs/prompts/01-feature-dev.md
 
@@ -201,23 +204,17 @@ Skill 体系是 Prompt 兼容层之上的权威工作方法：
 
 如果你在 VS Code 中使用 GitHub Copilot Chat，可直接使用：
 
+- `/wms-scene-router`
 - `/wms-plan-gate`
-- `/wms-feature-plan`
 - `/wms-auto-dev`
-- `/wms-feature-dev`
 - `/wms-evaluation-gate`
-- `/wms-issue-investigation`
-- `/wms-code-review`
-- `/wms-database-change`
-- `/wms-refactoring`
-- `/wms-documentation`
 - `/wms-link-trace`
 
 这些 slash prompt 由 `docs/skills-src/` 自动生成到 `.github/prompts/`。
 
 使用建议：
 
-- 场景明确时，优先使用场景型 slash prompt
+- 先用 `/wms-scene-router` 分场景，再进入阶段入口
 - 场景不清、跨场景或高风险任务，先用 `/wms-plan-gate`
 - 只有满足章程中的人工确认要求后，再进入 `/wms-auto-dev`
 - 涉及代码 / SQL / 配置改动时，完成前补用 `/wms-evaluation-gate`

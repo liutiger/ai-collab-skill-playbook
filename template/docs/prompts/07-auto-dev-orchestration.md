@@ -2,11 +2,12 @@
 
 > 对话开头推荐引用：
 > `#file:docs/prompts/00-department-standards.md`
+> `#file:docs/prompts/11-scene-router.md`
 > `#file:docs/prompts/07-auto-dev-orchestration.md`
-> 再按任务类型追加 `01~08` 中的一个场景提示词；涉及交付验收时，再追加 `10-evaluation-gate.md` 或在实现后单独进入评测门禁。
+> 若主场景已明确，再按需追加 `01~06` 中的对应场景检查包；涉及交付验收时，再追加 `10-evaluation-gate.md` 或在实现后单独进入评测门禁。
 >
 > **兼容入口**：本能力的权威工作法以 `auto-dev-orchestrator` 为准。
-> 必须与 `wms-task-governance`、`gitnexus-code-navigation`、`delivery-evaluation-gate` 和对应场景 Skill 配合使用。
+> 必须与 `wms-task-governance`、`gitnexus-code-navigation`、`delivery-evaluation-gate`、`11-scene-router.md` 和对应场景 Skill 配合使用。
 
 ---
 
