@@ -14,6 +14,8 @@
 
 > 说明：`AI协作研发章程` 是总纲，`Skill` 是工作法，`Prompt / Copilot slash prompt` 是工具入口。Prompt 现在承担“任务入口”和“场景切换”的职责；稳定工作方法以下列 Skill 为准：`wms-task-governance`、`gitnexus-code-navigation`、`auto-dev-orchestrator`、`delivery-evaluation-gate`、`link-trace-and-curation`、`plan-gate`。
 
+> 当前模板的根本收敛策略是：**阶段型 Skill 主动运行，场景型 Prompt / Scene Skill 被动补充**。也就是说，`01~06` 主要负责场景专项检查，不再推荐把它们都做成自动触发入口。
+
 ## Source Of Truth
 
 - Skill 源码：`docs/skills-src/`

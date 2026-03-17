@@ -24,7 +24,12 @@
         "id": "wms-plan-gate",
         "filename": "prompts/wms-plan-gate.prompt.md",
         "description": "WMS 通用方案确认总控：先判定章程场景，再澄清目标、定位上下文、给最小方案并停在待确认",
-        "triggers": ["方案核对", "先出方案", "待确认", "先定位上下文"],
+        "triggers": [
+          "方案核对",
+          "先出方案",
+          "待确认",
+          "先定位上下文"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/09-plan-gate.md"
@@ -40,7 +45,12 @@
         "id": "wms-feature-plan",
         "filename": "prompts/wms-feature-plan.prompt.md",
         "description": "WMS 新功能方案确认：先定位上下文、给最小改动方案并停在待确认",
-        "triggers": ["新增功能方案", "新功能先给方案", "功能设计", "确认后再实现"],
+        "triggers": [
+          "新增功能方案",
+          "新功能先给方案",
+          "功能设计",
+          "确认后再实现"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/09-plan-gate.md",
@@ -57,7 +67,12 @@
         "id": "wms-auto-dev",
         "filename": "prompts/wms-auto-dev.prompt.md",
         "description": "WMS 通用多角色自动开发总控：先判定章程场景，再在满足条件时进入分析、实现、自检、评测门禁、落盘闭环",
-        "triggers": ["自动开发", "多角色自动开发", "完整闭环", "分析实现测试落盘"],
+        "triggers": [
+          "自动开发",
+          "多角色自动开发",
+          "完整闭环",
+          "分析实现测试落盘"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/07-auto-dev-orchestration.md"
@@ -73,7 +88,11 @@
         "id": "wms-feature-dev",
         "filename": "prompts/wms-feature-dev.prompt.md",
         "description": "WMS 新功能实现闭环：分析、实现、自检、测试和文档沉淀",
-        "triggers": ["按方案继续实现", "开始写代码", "做一个新功能"],
+        "triggers": [
+          "按方案继续实现",
+          "开始写代码",
+          "做一个新功能"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/07-auto-dev-orchestration.md",
@@ -91,7 +110,12 @@
         "id": "wms-evaluation-gate",
         "filename": "prompts/wms-evaluation-gate.prompt.md",
         "description": "WMS 自动评测与交付验收门禁：确定评测范围、执行必要门禁、输出结构化评测结论，并决定是否允许完成",
-        "triggers": ["自动评测", "验收门禁", "评测流水线", "跑测试后给结论"],
+        "triggers": [
+          "自动评测",
+          "验收门禁",
+          "评测流水线",
+          "跑测试后给结论"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/10-evaluation-gate.md"
@@ -107,7 +131,12 @@
         "id": "wms-issue-investigation",
         "filename": "prompts/wms-issue-investigation.prompt.md",
         "description": "WMS 线上问题排查：先时间线、止血、5W，再给根因和补偿建议",
-        "triggers": ["线上异常", "先排障", "broken pipe", "数据不一致"],
+        "triggers": [
+          "线上异常",
+          "先排障",
+          "broken pipe",
+          "数据不一致"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/02-issue-investigation.md"
@@ -123,7 +152,12 @@
         "id": "wms-code-review",
         "filename": "prompts/wms-code-review.prompt.md",
         "description": "WMS 代码审查：按严重度优先输出问题，并覆盖正确性、并发和安全",
-        "triggers": ["代码审查", "Review PR", "review diff", "帮我 review"],
+        "triggers": [
+          "代码审查",
+          "Review PR",
+          "review diff",
+          "帮我 review"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/03-code-review.md"
@@ -139,7 +173,12 @@
         "id": "wms-database-change",
         "filename": "prompts/wms-database-change.prompt.md",
         "description": "WMS 数据库变更评审：关注联动影响、DDL/DML 风险和回滚路径",
-        "triggers": ["数据库变更", "字段调整", "DDL", "DML"],
+        "triggers": [
+          "数据库变更",
+          "字段调整",
+          "DDL",
+          "DML"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/04-database-change.md"
@@ -155,7 +194,12 @@
         "id": "wms-refactoring",
         "filename": "prompts/wms-refactoring.prompt.md",
         "description": "WMS 重构优化：先分级风险，再按行为不变原则拆步落地",
-        "triggers": ["重构", "拆方法", "优化结构", "行为不变"],
+        "triggers": [
+          "重构",
+          "拆方法",
+          "优化结构",
+          "行为不变"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/05-refactoring.md"
@@ -171,7 +215,12 @@
         "id": "wms-documentation",
         "filename": "prompts/wms-documentation.prompt.md",
         "description": "WMS 文档编写：按读者视角、证据链和沉淀目标组织输出",
-        "triggers": ["写文档", "沉淀知识", "整理流程", "补一份说明"],
+        "triggers": [
+          "写文档",
+          "沉淀知识",
+          "整理流程",
+          "补一份说明"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/06-documentation.md"
@@ -187,7 +236,12 @@
         "id": "wms-link-trace",
         "filename": "prompts/wms-link-trace.prompt.md",
         "description": "WMS 链路确认：确认真实执行链路、分支和副作用，并沉淀到 docs",
-        "triggers": ["确认链路", "有没有真正落盘", "MQ 链路", "副作用点"],
+        "triggers": [
+          "确认链路",
+          "有没有真正落盘",
+          "MQ 链路",
+          "副作用点"
+        ],
         "refs": [
           "docs/prompts/00-department-standards.md",
           "docs/prompts/08-link-confirmation.md"
@@ -231,8 +285,13 @@
     {
       "id": "wms-task-governance",
       "type": "core",
-      "compatPrompts": ["00-department-standards.md"],
-      "expectedScripts": ["scripts/create_task_dir.sh", "scripts/append_completion_marker.py"],
+      "compatPrompts": [
+        "00-department-standards.md"
+      ],
+      "expectedScripts": [
+        "scripts/create_task_dir.sh",
+        "scripts/append_completion_marker.py"
+      ],
       "expectedAssets": [],
       "positiveExamples": [
         "开始一个新的 WMS AI 开发任务，并创建任务目录和 README",
@@ -240,7 +299,8 @@
       ],
       "negativeExamples": [
         "解释一下 Java 17 的 sealed class 是什么"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "gitnexus-code-navigation",
@@ -251,7 +311,9 @@
         "08-link-confirmation.md",
         "09-plan-gate.md"
       ],
-      "expectedScripts": ["scripts/gitnexus_probe.sh"],
+      "expectedScripts": [
+        "scripts/gitnexus_probe.sh"
+      ],
       "expectedAssets": [],
       "positiveExamples": [
         "帮我先用 GitNexus 找这个异常属于哪条执行链路",
@@ -259,12 +321,15 @@
       ],
       "negativeExamples": [
         "给我写一段产品介绍文案"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "auto-dev-orchestrator",
       "type": "core",
-      "compatPrompts": ["07-auto-dev-orchestration.md"],
+      "compatPrompts": [
+        "07-auto-dev-orchestration.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "positiveExamples": [
@@ -273,7 +338,8 @@
       ],
       "negativeExamples": [
         "只帮我看一下这个类是干什么的"
-      ]
+      ],
+      "runtimeExposure": "active"
     },
     {
       "id": "delivery-evaluation-gate",
@@ -283,7 +349,9 @@
         "10-evaluation-gate.md",
         "01-feature-dev.md"
       ],
-      "expectedScripts": ["scripts/run_maven_eval_gate.sh"],
+      "expectedScripts": [
+        "scripts/run_maven_eval_gate.sh"
+      ],
       "expectedAssets": [
         "assets/templates/eval-plan.md",
         "assets/templates/eval-report.md"
@@ -294,40 +362,53 @@
       ],
       "negativeExamples": [
         "只帮我建议几个可能要跑的命令，不需要真正给出门禁结论"
-      ]
+      ],
+      "runtimeExposure": "active"
     },
     {
       "id": "link-trace-and-curation",
       "type": "core",
-      "compatPrompts": ["08-link-confirmation.md"],
+      "compatPrompts": [
+        "08-link-confirmation.md"
+      ],
       "expectedScripts": [],
-      "expectedAssets": ["assets/templates/link-trace.md"],
+      "expectedAssets": [
+        "assets/templates/link-trace.md"
+      ],
       "positiveExamples": [
         "确认调拨入库这条链路到底有没有真正落盘",
         "梳理这个 MQ 消费链路的关键副作用点并沉淀到 docs"
       ],
       "negativeExamples": [
         "帮我把这个 DTO 改个名字"
-      ]
+      ],
+      "runtimeExposure": "active"
     },
     {
       "id": "plan-gate",
       "type": "core",
-      "compatPrompts": ["09-plan-gate.md"],
+      "compatPrompts": [
+        "09-plan-gate.md"
+      ],
       "expectedScripts": [],
-      "expectedAssets": ["assets/templates/plan-gate.md"],
+      "expectedAssets": [
+        "assets/templates/plan-gate.md"
+      ],
       "positiveExamples": [
         "先帮我出方案，等我确认后再实现",
         "这个需求先做目标澄清、上下文定位和最小改动设计"
       ],
       "negativeExamples": [
         "直接改完这个 bug 并提交结果"
-      ]
+      ],
+      "runtimeExposure": "active"
     },
     {
       "id": "feature-dev-scene",
       "type": "scene",
-      "compatPrompts": ["01-feature-dev.md"],
+      "compatPrompts": [
+        "01-feature-dev.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -342,12 +423,15 @@
       ],
       "negativeExamples": [
         "分析这个线上报错的根因"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "issue-investigation-scene",
       "type": "scene",
-      "compatPrompts": ["02-issue-investigation.md"],
+      "compatPrompts": [
+        "02-issue-investigation.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -361,12 +445,15 @@
       ],
       "negativeExamples": [
         "帮我写一份架构设计文档"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "code-review-scene",
       "type": "scene",
-      "compatPrompts": ["03-code-review.md"],
+      "compatPrompts": [
+        "03-code-review.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -380,12 +467,15 @@
       ],
       "negativeExamples": [
         "帮我新增一个接口"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "database-change-scene",
       "type": "scene",
-      "compatPrompts": ["04-database-change.md"],
+      "compatPrompts": [
+        "04-database-change.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -399,12 +489,15 @@
       ],
       "negativeExamples": [
         "帮我梳理一条 MQ 链路"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "refactoring-scene",
       "type": "scene",
-      "compatPrompts": ["05-refactoring.md"],
+      "compatPrompts": [
+        "05-refactoring.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -418,12 +511,15 @@
       ],
       "negativeExamples": [
         "帮我新增一个数据库字段"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     },
     {
       "id": "documentation-scene",
       "type": "scene",
-      "compatPrompts": ["06-documentation.md"],
+      "compatPrompts": [
+        "06-documentation.md"
+      ],
       "expectedScripts": [],
       "expectedAssets": [],
       "requiredCoreRefs": [
@@ -437,7 +533,8 @@
       ],
       "negativeExamples": [
         "直接给我改代码"
-      ]
+      ],
+      "runtimeExposure": "source-only"
     }
   ]
 }

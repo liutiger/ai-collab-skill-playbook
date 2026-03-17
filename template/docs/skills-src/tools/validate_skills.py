@@ -15,6 +15,8 @@ SCENE_BANNED_PHRASES = {
     "完成标记写入",
 }
 SCENE_TRIGGER_REQUIRED_PHRASES = {"use only when", "not for"}
+VALID_RUNTIME_EXPOSURES = {"active", "source-only"}
+MAX_ACTIVE_RUNTIME_SKILLS = 5
 
 
 def repo_root() -> Path:
@@ -93,6 +95,10 @@ def validate_skill(root: Path, source_root: Path, prompt_root: Path, skill_meta:
     if not frontmatter.get("description"):
         errors.append(f"{skill_id}: frontmatter description is required")
 
+    runtime_exposure = skill_meta.get("runtimeExposure")
+    if runtime_exposure not in VALID_RUNTIME_EXPOSURES:
+        errors.append(f"{skill_id}: runtimeExposure must be one of {sorted(VALID_RUNTIME_EXPOSURES)}")
+
     for link in collect_local_links(skill_file):
         if not (skill_dir / link).exists():
             errors.append(f"{skill_id}: broken local link {link}")
@@ -121,6 +127,8 @@ def validate_skill(root: Path, source_root: Path, prompt_root: Path, skill_meta:
     if skill_meta["type"] == "scene":
         skill_text = skill_file.read_text(encoding="utf-8")
         description_lower = frontmatter["description"].lower()
+        if skill_meta.get("runtimeExposure") != "source-only":
+            errors.append(f"{skill_id}: scene skills must use runtimeExposure=source-only")
         for core_ref in skill_meta.get("requiredCoreRefs", []):
             if core_ref not in skill_text:
                 errors.append(f"{skill_id}: scene skill must reference core skill {core_ref}")
@@ -150,6 +158,12 @@ def main() -> int:
             continue
         seen_ids.add(skill_id)
         all_errors.extend(validate_skill(root, source_root, prompt_root, skill_meta))
+
+    active_runtime_skills = [skill["id"] for skill in manifest["skills"] if skill.get("runtimeExposure") == "active"]
+    if len(active_runtime_skills) > MAX_ACTIVE_RUNTIME_SKILLS:
+        all_errors.append(
+            f"too many active runtime skills: {len(active_runtime_skills)} > {MAX_ACTIVE_RUNTIME_SKILLS}; shrink auto-trigger surface"
+        )
 
     if all_errors:
         print("[FAIL] Skill validation failed:")

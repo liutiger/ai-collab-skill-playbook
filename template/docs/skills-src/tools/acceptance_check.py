@@ -45,12 +45,27 @@ def main() -> int:
     checks.append(("copilot_generate_check", ok, output))
 
     skill_dirs = sorted(path.name for path in target_root.iterdir() if path.is_dir()) if target_root.exists() else []
-    expected_ids = sorted(skill["id"] for skill in manifest["skills"])
+    expected_ids = sorted(
+        skill["id"] for skill in manifest["skills"] if skill.get("runtimeExposure", "active") == "active"
+    )
     checks.append(
         (
             "generated_skill_count",
             skill_dirs == expected_ids,
             f"expected={expected_ids} actual={skill_dirs}",
+        )
+    )
+
+    scene_exposures_ok = all(
+        skill.get("runtimeExposure") == "source-only"
+        for skill in manifest["skills"]
+        if skill["type"] == "scene"
+    )
+    checks.append(
+        (
+            "scene_runtime_exposure",
+            scene_exposures_ok,
+            "scene skills stay source-only to avoid runtime trigger interference",
         )
     )
 

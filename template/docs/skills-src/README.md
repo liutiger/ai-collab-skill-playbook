@@ -26,6 +26,26 @@ docs/skills-src/
 .github/prompts/
 ```
 
+## 运行时分层
+
+这套模板现在明确区分两类 Skill：
+
+- 主动运行 Skill：会生成到 `.claude/skills/wms/`，允许运行时自动触发
+- 被动检查包：保留在 `docs/skills-src/`，用于手工引用、Prompt 兼容层、Copilot slash prompt 或维护时查阅
+
+当前默认只保留以下主动运行 Skill：
+
+- `plan-gate`
+- `auto-dev-orchestrator`
+- `delivery-evaluation-gate`
+- `link-trace-and-curation`
+
+以下内容不再作为主动运行 Skill 自动触发：
+
+- `wms-task-governance`
+- `gitnexus-code-navigation`
+- `01~06` 对应场景 Skill
+
 ## 工作规则
 
 - 只编辑 `docs/skills-src/`，不要直接手改 `.claude/skills/wms/`
@@ -37,9 +57,11 @@ docs/skills-src/
 ## 防串扰规则
 
 - 默认只允许一个主导 Skill 自动触发，其他 Skill 尽量作为伴随 Skill
+- 主动运行 Skill 的总数默认不应超过 5 个
 - Scene Skill 的 frontmatter description 必须同时写清楚：
   - `Use only when`
   - `Not for`
+- Scene Skill 默认只作为被动检查包保留在源码层，不进入 `.claude/skills/`
 - 阶段型 Skill 必须写前后边界，例如：
   - `plan-gate` 只在实现前触发
   - `auto-dev-orchestrator` 只在方案确认后触发

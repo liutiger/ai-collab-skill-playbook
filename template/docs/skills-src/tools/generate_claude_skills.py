@@ -18,6 +18,14 @@ def load_manifest(root: Path) -> dict:
     return json.loads(manifest_path.read_text(encoding="utf-8"))
 
 
+def active_skill_ids(manifest: dict) -> list[str]:
+    return [
+        skill["id"]
+        for skill in manifest["skills"]
+        if skill.get("runtimeExposure", "active") == "active"
+    ]
+
+
 def file_hash(path: Path) -> bytes:
     return path.read_bytes()
 
@@ -30,7 +38,20 @@ def same_file(source: Path, target: Path) -> bool:
     return file_hash(source) == file_hash(target) and executable_flag(source) == executable_flag(target)
 
 
-def list_files(root: Path) -> dict[str, Path]:
+def source_files_for_active_skills(source_root: Path, skill_ids: list[str]) -> dict[str, Path]:
+    files: dict[str, Path] = {}
+    for skill_id in skill_ids:
+        skill_root = source_root / skill_id
+        if not skill_root.exists():
+            continue
+        for path in skill_root.rglob("*"):
+            if path.is_file():
+                rel = str(path.relative_to(source_root)).replace("\\", "/")
+                files[rel] = path
+    return files
+
+
+def list_target_files(root: Path) -> dict[str, Path]:
     if not root.exists():
         return {}
     return {
@@ -40,10 +61,8 @@ def list_files(root: Path) -> dict[str, Path]:
     }
 
 
-def compare_trees(source_root: Path, target_root: Path) -> tuple[list[str], list[str], list[str]]:
-    source_files = list_files(source_root)
-    target_files = list_files(target_root)
-
+def compare_trees(source_files: dict[str, Path], target_root: Path) -> tuple[list[str], list[str], list[str]]:
+    target_files = list_target_files(target_root)
     missing = sorted(rel for rel in source_files if rel not in target_files)
     changed = sorted(
         rel
@@ -54,10 +73,8 @@ def compare_trees(source_root: Path, target_root: Path) -> tuple[list[str], list
     return missing, changed, stale
 
 
-def sync_trees(source_root: Path, target_root: Path, clean_stale: bool) -> tuple[list[str], list[str], list[str]]:
-    source_files = list_files(source_root)
-    target_files = list_files(target_root)
-
+def sync_trees(source_files: dict[str, Path], target_root: Path, clean_stale: bool) -> tuple[list[str], list[str], list[str]]:
+    target_files = list_target_files(target_root)
     created: list[str] = []
     updated: list[str] = []
     removed: list[str] = []
@@ -88,19 +105,22 @@ def sync_trees(source_root: Path, target_root: Path, clean_stale: bool) -> tuple
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate .claude/skills/wms from docs/skills-src.")
     parser.add_argument("--check", action="store_true", help="Only check whether source and target are in sync.")
-    parser.add_argument("--clean-stale", action="store_true", help="Remove files in target that no longer exist in source.")
+    parser.add_argument("--clean-stale", action="store_true", help="Deprecated alias; stale runtime skill files are removed by default.")
+    parser.add_argument("--no-clean-stale", action="store_true", help="Keep stale files in target instead of removing them.")
     args = parser.parse_args()
 
     root = repo_root()
     manifest = load_manifest(root)
     source_root = root / manifest["sourceRoot"]
     target_root = root / manifest["targetRoot"]
+    selected_skill_ids = active_skill_ids(manifest)
+    source_files = source_files_for_active_skills(source_root, selected_skill_ids)
 
     if not source_root.exists():
         print(f"[ERROR] Source root not found: {source_root}")
         return 1
 
-    missing, changed, stale = compare_trees(source_root, target_root)
+    missing, changed, stale = compare_trees(source_files, target_root)
 
     if args.check:
         if not missing and not changed and not stale:
@@ -122,17 +142,19 @@ def main() -> int:
         return 1
 
     target_root.mkdir(parents=True, exist_ok=True)
-    created, updated, removed = sync_trees(source_root, target_root, clean_stale=args.clean_stale)
+    clean_stale = not args.no_clean_stale
+    created, updated, removed = sync_trees(source_files, target_root, clean_stale=clean_stale)
 
     print("[OK] Skill generation completed.")
     print(f"  Source: {source_root}")
     print(f"  Target: {target_root}")
+    print(f"  Active runtime skills: {selected_skill_ids}")
     print(f"  Created: {len(created)}")
     print(f"  Updated: {len(updated)}")
     print(f"  Removed: {len(removed)}")
 
-    if stale and not args.clean_stale:
-        print("  Note: stale files remain in target. Re-run with --clean-stale to remove them.")
+    if stale and not clean_stale:
+        print("  Note: stale files remain in target because --no-clean-stale was used.")
 
     if created:
         print("  Created files:")
