@@ -1,6 +1,6 @@
 ---
 name: database-change-scene
-description: "Use when a WMS task includes schema change, SQL review, or data-fix planning. This is a thin scene skill that adds database-specific checks on top of the core skills."
+description: "Use only when schema change, SQL review, or data-fix planning is the main task. Not for generic feature work that merely touches persistence."
 ---
 
 # Database Change Scene

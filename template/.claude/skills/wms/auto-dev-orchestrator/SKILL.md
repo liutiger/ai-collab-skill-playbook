@@ -1,6 +1,6 @@
 ---
 name: auto-dev-orchestrator
-description: "Use when a WMS task should run as a full multi-role delivery loop: understand, locate, design, implement, review, verify, and sink results into docs."
+description: "Use only when implementation has been approved and the next step is a full end-to-end delivery loop. Not for early planning, standalone review, incident triage, or documentation-only work."
 ---
 
 # Auto Dev Orchestrator

@@ -1,6 +1,6 @@
 ---
 name: issue-investigation-scene
-description: "Use when a WMS task is incident investigation, hotfix design, or root-cause analysis. This is a thin scene skill that adds incident-specific checks on top of the core skills."
+description: "Use only when the main job is incident investigation, containment, hotfix design, or root-cause analysis. Not for planned feature delivery, diff review, or docs capture."
 ---
 
 # Issue Investigation Scene

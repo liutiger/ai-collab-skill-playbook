@@ -1,6 +1,6 @@
 ---
 name: gitnexus-code-navigation
-description: "Use when understanding WMS code, tracing a chain, or assessing change safety. This skill enforces the GitNexus-first navigation protocol and anti-degeneration rules before any broad search."
+description: "Use when the primary need is codebase navigation or change-safety analysis with GitNexus-first search. This is a companion navigation skill, not a full delivery or scene skill."
 ---
 
 # GitNexus Code Navigation

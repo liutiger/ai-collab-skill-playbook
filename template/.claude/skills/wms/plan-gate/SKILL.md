@@ -1,6 +1,6 @@
 ---
 name: plan-gate
-description: "Use when a WMS task must stop at goal clarification, context locating, and minimum-change planning, then wait for explicit approval before implementation."
+description: "Use only before implementation, when the task must stop at goal clarification, context locating, and minimum-change planning. Not for already-approved execution or post-change evaluation."
 ---
 
 # Plan Gate

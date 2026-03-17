@@ -1,6 +1,6 @@
 ---
 name: wms-task-governance
-description: "Use when starting, resuming, or closing a WMS AI task that must create docs/tasks records, preserve completion markers, and sink artifacts, conversations, and business insights."
+description: "Use only when task lifecycle management itself is needed: creating, resuming, or closing docs/tasks records, completion markers, or sink artifacts. Not for ordinary coding, review, tracing, or planning questions."
 ---
 
 # WMS Task Governance

@@ -1,6 +1,6 @@
 ---
 name: documentation-scene
-description: "Use when a WMS task is documentation writing or knowledge capture. This is a thin scene skill that adds audience, structure, and sink-location checks on top of the core skills."
+description: "Use only when writing docs or capturing reusable knowledge is the primary deliverable. Not for feature coding, review, or evaluation gates."
 ---
 
 # Documentation Scene

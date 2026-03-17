@@ -1,6 +1,6 @@
 ---
 name: delivery-evaluation-gate
-description: "Use when a WMS task has changed code, SQL, or key configuration and now needs an explicit automated evaluation gate verdict before it can be treated as complete."
+description: "Use only after code, SQL, or configuration changes already exist and the next step is a completion verdict. Not for planning, implementation, or chain tracing."
 ---
 
 # Delivery Evaluation Gate

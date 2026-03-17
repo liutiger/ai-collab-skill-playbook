@@ -1,6 +1,6 @@
 ---
 name: feature-dev-scene
-description: "Use when a WMS task is a new feature or capability change. This is a thin scene skill that adds feature-specific checks on top of wms-task-governance, gitnexus-code-navigation, auto-dev-orchestrator, and delivery-evaluation-gate."
+description: "Use only when the task is approved feature implementation or capability change. Not for early planning, incident investigation, code review, database-only review, refactoring-only cleanup, or docs-only work."
 ---
 
 # Feature Dev Scene

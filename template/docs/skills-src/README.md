@@ -34,6 +34,18 @@ docs/skills-src/
 - Core Skill 负责稳定工作方法，Scene Skill 只保留场景专项检查点
 - 若 Skill / Copilot 适配与 `docs/guides/AI协作研发章程.md` 冲突，以章程为准
 
+## 防串扰规则
+
+- 默认只允许一个主导 Skill 自动触发，其他 Skill 尽量作为伴随 Skill
+- Scene Skill 的 frontmatter description 必须同时写清楚：
+  - `Use only when`
+  - `Not for`
+- 阶段型 Skill 必须写前后边界，例如：
+  - `plan-gate` 只在实现前触发
+  - `auto-dev-orchestrator` 只在方案确认后触发
+  - `delivery-evaluation-gate` 只在改动已存在后触发
+- 详细说明见 `docs/guides/skill-trigger-hygiene.md`
+
 ## 快速启动
 
 任务目录初始化优先使用：

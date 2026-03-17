@@ -14,6 +14,7 @@ SCENE_BANNED_PHRASES = {
     "任务目录初始化",
     "完成标记写入",
 }
+SCENE_TRIGGER_REQUIRED_PHRASES = {"use only when", "not for"}
 
 
 def repo_root() -> Path:
@@ -119,12 +120,16 @@ def validate_skill(root: Path, source_root: Path, prompt_root: Path, skill_meta:
 
     if skill_meta["type"] == "scene":
         skill_text = skill_file.read_text(encoding="utf-8")
+        description_lower = frontmatter["description"].lower()
         for core_ref in skill_meta.get("requiredCoreRefs", []):
             if core_ref not in skill_text:
                 errors.append(f"{skill_id}: scene skill must reference core skill {core_ref}")
         for phrase in SCENE_BANNED_PHRASES:
             if phrase in skill_text:
                 errors.append(f"{skill_id}: scene skill repeats core flow phrase '{phrase}'")
+        for phrase in SCENE_TRIGGER_REQUIRED_PHRASES:
+            if phrase not in description_lower:
+                errors.append(f"{skill_id}: scene skill description must contain trigger hygiene phrase '{phrase}'")
 
     return errors
 

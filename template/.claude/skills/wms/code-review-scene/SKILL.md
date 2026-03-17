@@ -1,6 +1,6 @@
 ---
 name: code-review-scene
-description: "Use when a WMS task is code review or diff review. This is a thin scene skill that adds review-specific checks on top of the core skills."
+description: "Use only when reviewing an existing diff, PR, or code change set. Not for authoring new features, incident triage, or documentation writing."
 ---
 
 # Code Review Scene

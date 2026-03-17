@@ -1,6 +1,6 @@
 ---
 name: link-trace-and-curation
-description: "Use when a WMS task must confirm the real execution chain, branch conditions, and side effects, then sink the result into docs/tasks or knowledge-base."
+description: "Use only when the primary deliverable is an execution-chain trace with branches and side effects. Not for feature implementation, generic review, or post-change evaluation."
 ---
 
 # Link Trace and Curation

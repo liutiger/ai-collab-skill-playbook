@@ -1,6 +1,6 @@
 ---
 name: refactoring-scene
-description: "Use when a WMS task is safe refactoring, restructuring, or behavior-preserving cleanup. This is a thin scene skill that adds refactoring-specific checks on top of the core skills."
+description: "Use only when the main task is behavior-preserving cleanup or structural refactoring. Not for new features, incidents, or schema-led changes."
 ---
 
 # Refactoring Scene
