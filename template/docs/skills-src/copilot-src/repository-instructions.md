@@ -34,7 +34,7 @@
 
 ## 第一版试运行默认策略
 
-- 默认先进入 `/wms-scene-router` 做场景归类，再决定下一步阶段入口
+- 默认先进入 `/wms-scene-router` 做场景归类，再由 `12-scene-catalog.md` 提供专项检查，再决定下一步阶段入口
 - 用户表达不清、边界不清、跨模块、跨服务、涉及公共接口或核心链路时，默认先进入 `/wms-plan-gate`
 - 只有在目标、范围、方案和风险已明确后，才进入 `/wms-auto-dev`
 - 代码 / SQL / 配置改动完成后，默认进入 `/wms-evaluation-gate` 再决定是否允许完成
@@ -70,7 +70,7 @@
 如果同时命中多个场景：
 
 - 优先满足风险更高的工作流
-- 先用 `/wms-scene-router` 定一个主场景，再进入对应阶段入口
+- 先用 `/wms-scene-router` 定一个主场景，再结合 `12-scene-catalog.md` 进入对应阶段入口
 - 若用户表达了“先出方案、确认后再做”，优先进入 `plan-gate` 风格
 - 若用户表达了“确认链路、有没有真正落盘/发消息”，优先进入 `link-trace` 风格
 - 若仍然不明确，先问最少的澄清问题，或先按 `plan-gate` 收敛
@@ -83,7 +83,7 @@
 
 使用原则：
 
-- 默认先用 `/wms-scene-router` 定场景
+- 默认先用 `/wms-scene-router` 定场景，再结合 `12-scene-catalog.md` 进入阶段入口
 - 场景不清或跨场景：优先用 `/wms-plan-gate`
 - 只有在满足章程中的人工确认要求后，才直接进入 `/wms-auto-dev`
 
@@ -108,6 +108,7 @@
 
 - `00-department-standards.md` 是每次都应带的兼容入口
 - `11-scene-router.md` 用于先判场景，再选阶段
+- `12-scene-catalog.md` 用于提供每个场景的专项检查点和默认产出物
 - `07-auto-dev-orchestration.md` 用于完整开发闭环
 - `08-link-confirmation.md` 用于链路确认与知识沉淀
 - `09-plan-gate.md` 用于先方案后实现

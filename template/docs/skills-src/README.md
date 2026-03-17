@@ -52,7 +52,7 @@ docs/skills-src/
 - Copilot 运行产物也由 `docs/skills-src/` 生成，不要直接手改 `.github/copilot-instructions.md`、`.github/instructions/`、`.github/prompts/`
 - `docs/prompts/00~10` 保留为兼容入口，不再作为唯一事实来源
 - Core Skill 负责稳定工作方法，Scene Skill 只保留场景专项检查点
-- Prompt 层默认收敛为：`11-scene-router + 01~06 场景检查包 + 07/08/09/10 阶段入口`
+- Prompt 层默认收敛为：`11-scene-router + 12-scene-catalog + 07/08/09/10 阶段入口`
 - 若 Skill / Copilot 适配与 `docs/guides/AI协作研发章程.md` 冲突，以章程为准
 
 ## 防串扰规则
@@ -102,7 +102,7 @@ docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
 
 使用建议：
 
-- 先用 `/wms-scene-router` 分场景，再进入阶段入口
+- 先用 `/wms-scene-router` 分场景，再由 `12-scene-catalog.md` 提供专项检查
 - 场景不清或跨场景时，优先用 `/wms-plan-gate`
 - 只有已满足章程中的人工确认要求后，再进入 `/wms-auto-dev`
 - 涉及代码 / SQL / 配置改动时，完成前补用 `/wms-evaluation-gate`

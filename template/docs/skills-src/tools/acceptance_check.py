@@ -129,13 +129,26 @@ def main() -> int:
             "repository instructions anchored to charter",
         )
     )
+    scene_catalog_path = root / "docs/prompts/12-scene-catalog.md"
+    scene_catalog_text = scene_catalog_path.read_text(encoding="utf-8") if scene_catalog_path.exists() else ""
+    checks.append(
+        (
+            "scene_catalog_exists",
+            scene_catalog_path.exists() and "Scene 1" in scene_catalog_text and "Scene 6" in scene_catalog_text,
+            str(scene_catalog_path.relative_to(root)),
+        )
+    )
     scene_router_path = copilot_target_root / "prompts/wms-scene-router.prompt.md"
     scene_router_text = scene_router_path.read_text(encoding="utf-8") if scene_router_path.exists() else ""
     checks.append(
         (
             "copilot_scene_router_guard",
-            "主场景" in scene_router_text and "次场景" in scene_router_text and "/wms-plan-gate" in scene_router_text,
-            "scene-router prompt selects one primary scene and routes risky work to plan gate",
+            "12-scene-catalog.md" in scene_router_text
+            and "新增功能" in repo_text
+            and "帮我 review" in repo_text
+            and "DDL" in repo_text
+            and "/wms-scene-router" in repo_text,
+            "scene-router prompt loads the unified scene catalog and repo routing covers representative natural signals",
         )
     )
     auto_dev_path = copilot_target_root / "prompts/wms-auto-dev.prompt.md"
@@ -143,8 +156,11 @@ def main() -> int:
     checks.append(
         (
             "copilot_auto_dev_scene_guard",
-            "11-scene-router.md" in auto_dev_text and "高风险条件" in auto_dev_text and "待人工确认后再实现" in auto_dev_text,
-            "auto-dev prompt enforces scene routing and plan gate",
+            "11-scene-router.md" in auto_dev_text
+            and "12-scene-catalog.md" in auto_dev_text
+            and "高风险条件" in auto_dev_text
+            and "待人工确认后再实现" in auto_dev_text,
+            "auto-dev prompt enforces scene routing, scene catalog loading and plan gate",
         )
     )
     plan_gate_path = copilot_target_root / "prompts/wms-plan-gate.prompt.md"
@@ -152,8 +168,11 @@ def main() -> int:
     checks.append(
         (
             "copilot_plan_gate_scene_guard",
-            "11-scene-router.md" in plan_gate_text and "停在待确认" in plan_gate_text and "高风险条件" in plan_gate_text,
-            "plan-gate prompt enforces scene routing and hold",
+            "11-scene-router.md" in plan_gate_text
+            and "12-scene-catalog.md" in plan_gate_text
+            and "停在待确认" in plan_gate_text
+            and "高风险条件" in plan_gate_text,
+            "plan-gate prompt enforces scene routing, scene catalog loading and hold",
         )
     )
     evaluation_gate_path = copilot_target_root / "prompts/wms-evaluation-gate.prompt.md"

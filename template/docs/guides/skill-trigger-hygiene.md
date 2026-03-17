@@ -72,7 +72,7 @@
 
 - 主动运行 Skill 只保留少数几个阶段型 Skill
 - 场景 Skill 降级为源码层的被动检查包，不再默认进入 `.claude/skills/`
-- Copilot / Prompt 层不再暴露一堆相近场景入口，而是收敛成 `1 个 scene-router + 少数阶段入口`
+- Copilot / Prompt 层不再暴露一堆相近场景入口，而是收敛成 `1 个 scene-router + 1 个 scene-catalog + 少数阶段入口`
 
 也就是把“阶段”与“场景”拆开：
 

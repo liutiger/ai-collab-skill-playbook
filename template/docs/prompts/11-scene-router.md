@@ -4,7 +4,7 @@
 > `#file:docs/prompts/00-department-standards.md`
 > `#file:docs/prompts/11-scene-router.md`
 >
-> 这是 Prompt 层的统一场景入口。先判定“这次到底是哪类任务”，再决定下一步进入 `09-plan-gate.md`、`07-auto-dev-orchestration.md`、`08-link-confirmation.md` 或 `10-evaluation-gate.md`。
+> 这是 Prompt 层的统一场景入口。先结合 `12-scene-catalog.md` 判定“这次到底是哪类任务”，再决定下一步进入 `09-plan-gate.md`、`07-auto-dev-orchestration.md`、`08-link-confirmation.md` 或 `10-evaluation-gate.md`。
 
 ---
 
@@ -17,6 +17,8 @@
 3. 明确下一步该进入哪个阶段入口
 
 默认不要同时激活多个场景，不要让场景和阶段混在一起。
+
+专项检查点、默认产出物和阶段切换建议，全部以 `12-scene-catalog.md` 为准。
 
 ---
 
@@ -108,9 +110,9 @@
 
 ## 推荐组合
 
-- 先做场景路由：`00 + 11`
-- 路由后先核对方案：`00 + 11 + 09 + 0x`
-- 路由后进入实现：`00 + 11 + 07 + 0x`
+- 先做场景路由：`00 + 11 + 12`
+- 路由后先核对方案：`00 + 11 + 12 + 09`
+- 路由后进入实现：`00 + 11 + 12 + 07`
 - 实现后验收：`00 + 10`
 
 ---

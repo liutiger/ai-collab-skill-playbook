@@ -7,14 +7,14 @@
 - **章程层（总纲）**：`docs/guides/AI协作研发章程.md`
 - **Layer 1**（自动注入）：项目级上下文。不同工具下通常来自 `AGENTS.md` 或 `.github/copilot-instructions.md`
 - **Layer 2**（兼容入口）：`00-department-standards.md`，每次**必须**手动引用
-- **Layer 3**（兼容场景入口）：先用 `11-scene-router.md` 判场景，再按阶段叠加对应入口
+- **Layer 3**（兼容场景入口）：先用 `11-scene-router.md` 判场景，再从 `12-scene-catalog.md` 提取专项检查，最后进入阶段入口
 - **Skill 层（权威工作法）**：`docs/skills-src/` 为源码，`.claude/skills/wms/` 为运行产物
 - **Copilot 适配层**：`.github/copilot-instructions.md`、`.github/instructions/`、`.github/prompts/` 由 `docs/skills-src/` 自动生成
 - **编排层（推荐）**：复杂任务或自动开发时，追加 `07-auto-dev-orchestration.md`
 
 > 说明：`AI协作研发章程` 是总纲，`Skill` 是工作法，`Prompt / Copilot slash prompt` 是工具入口。Prompt 现在承担“任务入口”和“场景切换”的职责；稳定工作方法以下列 Skill 为准：`wms-task-governance`、`gitnexus-code-navigation`、`auto-dev-orchestrator`、`delivery-evaluation-gate`、`link-trace-and-curation`、`plan-gate`。
 
-> 当前模板的根本收敛策略是：**阶段型 Skill 主动运行，场景型 Prompt / Scene Skill 被动补充**。也就是说，`01~06` 主要负责场景专项检查，不再推荐把它们都做成自动触发入口；Copilot 层也收敛成 `1 个 scene-router + 少数阶段入口`。
+> 当前模板的根本收敛策略是：**阶段型 Skill 主动运行，场景目录集中维护，兼容场景 Prompt 只保留壳层**。也就是说，`12-scene-catalog.md` 是场景专项检查的唯一事实来源；`01~06` 仅作为兼容入口保留；Copilot 层收敛成 `1 个 scene-router + 少数阶段入口`。
 
 ## Source Of Truth
 
@@ -43,7 +43,7 @@ python3 docs/skills-src/tools/acceptance_check.py
 
 使用建议：
 
-- 先用 `/wms-scene-router` 判断主场景，再进入阶段入口
+- 先用 `/wms-scene-router` 判断主场景，再结合 `12-scene-catalog.md` 进入阶段入口
 - 场景不清、边界不清或跨场景时，优先用 `/wms-plan-gate`
 - 只有已满足章程中的人工确认要求后，再进入 `/wms-auto-dev`
 - 涉及代码 / SQL / 配置改动时，完成前补跑 `/wms-evaluation-gate`
@@ -63,6 +63,7 @@ python3 docs/skills-src/tools/acceptance_check.py
 ```
 #file:docs/prompts/00-department-standards.md
 #file:docs/prompts/11-scene-router.md
+#file:docs/prompts/12-scene-catalog.md
 
 [任务描述]
 ```
@@ -74,13 +75,13 @@ python3 docs/skills-src/tools/acceptance_check.py
 ```
 #file:docs/prompts/00-department-standards.md
 #file:docs/prompts/11-scene-router.md
+#file:docs/prompts/12-scene-catalog.md
 #file:docs/prompts/07-auto-dev-orchestration.md
-#file:docs/prompts/01-feature-dev.md
 
 [任务描述]
 ```
 
-> `11` 先负责路由，`01~06` 只作为场景专项检查包按需追加；涉及交付验收时，再追加 `10` 或在实现后单独进入评测门禁。
+> `11` 先负责路由，`12` 提供专项检查，`01~06` 仅在旧入口兼容时按需追加；涉及交付验收时，再追加 `10` 或在实现后单独进入评测门禁。
 
 ### 方案核对 / 实施前确认模式
 
@@ -89,13 +90,13 @@ python3 docs/skills-src/tools/acceptance_check.py
 ```
 #file:docs/prompts/00-department-standards.md
 #file:docs/prompts/11-scene-router.md
+#file:docs/prompts/12-scene-catalog.md
 #file:docs/prompts/09-plan-gate.md
-#file:docs/prompts/01-feature-dev.md
 
 [任务描述]
 ```
 
-> `11` 先负责路由；若你已经清楚主场景，可按需再追加 `01~06` 中对应检查包。确认方案后，推荐切换到 `00 + 11 + 07 + 对应场景` 继续落地；涉及代码 / SQL / 配置改动时，完成前再补 `00 + 10`。
+> `11` 先负责路由，`12` 负责主场景专项检查。确认方案后，推荐切换到 `00 + 11 + 12 + 07` 继续落地；涉及代码 / SQL / 配置改动时，完成前再补 `00 + 10`。
 
 ### 评测门禁 / 交付验收模式
 
@@ -123,6 +124,7 @@ python3 docs/skills-src/tools/acceptance_check.py
 | 方案核对 / 实施前确认 | `09-plan-gate.md` |
 | 自动评测 / 交付验收 | `10-evaluation-gate.md` |
 | 场景路由入口 | `11-scene-router.md` |
+| 统一场景目录 | `12-scene-catalog.md` |
 
 ## Prompt -> Skill 映射
 
@@ -140,12 +142,13 @@ python3 docs/skills-src/tools/acceptance_check.py
 | `09-plan-gate.md` | `plan-gate` |
 | `10-evaluation-gate.md` | `delivery-evaluation-gate` |
 | `11-scene-router.md` | `feature-dev-scene` / `issue-investigation-scene` / `code-review-scene` / `database-change-scene` / `refactoring-scene` / `documentation-scene`（路由入口） |
+| `12-scene-catalog.md` | `01~06` 对应场景专项检查的统一事实来源 |
 
 ## 关键要求
 
 - **00 必须每次都带**，不可只带 Layer 3
-- `01~06` 是场景检查包，`11` 是统一场景入口，`07/09/10/08` 是阶段入口
-- `01~11` 可单独使用，但默认也应按多角色阶段执行，不再按单一身份思考
+- `01~06` 是兼容入口壳层，`12` 是统一场景目录，`11` 是统一场景入口，`07/09/10/08` 是阶段入口
+- `01~12` 可单独使用，但默认也应按多角色阶段执行，不再按单一身份思考
 - 复杂任务推荐叠加 `07`，但 `07` 不是 `00` 的替代品
 - 想先核对理解、上下文和实施方案时，优先使用 `09`，确认后再进入实现
 - 涉及代码 / SQL / 配置改动时，完成前优先使用 `10` 做评测门禁
