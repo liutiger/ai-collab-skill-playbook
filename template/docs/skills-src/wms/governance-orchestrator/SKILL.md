@@ -31,9 +31,10 @@ description: "Use as the default WMS skill entry. It should classify scene, choo
 
 1. 先执行共享开始合同：[start contract](../wms-task-governance/references/start-contract.md)
 2. 读 [workflow](references/workflow.md)
-3. 输出时遵守 [output contract](references/output-contract.md)
-4. 准备结束当前轮次前，先执行共享结束合同：[finish contract](../wms-task-governance/references/finish-contract.md)
-5. 最后执行 [checklists](references/checklists.md)
+3. 若涉及平台确认或委派，分别读 [platform confirmation adapter](references/platform-confirmation-adapter.md) 和 [delegation payload](references/delegation-payload.md)
+4. 输出时遵守 [output contract](references/output-contract.md)
+5. 准备结束当前轮次前，先执行共享结束合同：[finish contract](../wms-task-governance/references/finish-contract.md)
+6. 最后执行 [checklists](references/checklists.md)
 
 ## Boundaries
 

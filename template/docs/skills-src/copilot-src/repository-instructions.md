@@ -26,11 +26,13 @@
 - 先遵守 `docs/guides/AI协作研发章程.md`，再执行本文件中的 Copilot 路由规则
 - 第一版试运行以 `docs/guides/AI协作试运行说明.md` 作为人类研发同学的最小上手入口
 - 默认由 `/wms-orchestrator` 自动判场景、选策略、推进三态并叠加方法
+- 当前任务 README / 控制文档是本轮治理控制面：首轮完整阅读，后续优先做增量补充检查
 - 涉及代码定位、调用链分析、影响评估时，默认顺序：`GitNexus > 局部 rg > 全项目搜索`
 - 高风险需求、边界不清改动、跨模块功能，默认先停在 `/wms-orchestrator` 的 `DISCOVER`
 - 涉及代码 / SQL / 配置改动时，完成前默认补一次 `/wms-evaluation-gate`
 - 每次任务尽量落到 `docs/tasks/{年份}/{MM}-{任务名}/`
 - 有复用价值的结论继续沉淀到 `docs/knowledge-base/`
+- 若委派给 subagent，必须同步控制文档路径、本轮规划、非目标和完成标准
 
 ## 双轴五构件
 

@@ -130,7 +130,7 @@ Knowledge Sink 指任务过程中必须写入的沉淀位置，包括：
 #### Governance Axis
 
 - `Charter`：总纲，定义定位、边界、原则和完成标准
-- `Governance Contract`：共享生命周期合同，例如规划标记、结束前确认、多轮补充检查
+- `Governance Contract`：共享生命周期合同，负责把“任务文档作为治理控制面”落实成统一协议，包括 `Policy Sync`、`Task Record`、`Delta Check`、`Human Confirmation`、`Delegation`
 
 #### Execution Axis
 
@@ -144,6 +144,11 @@ Knowledge Sink 指任务过程中必须写入的沉淀位置，包括：
 - `Strategy Packs` 负责回答“这轮怎么推进”，`TDD / ACD / AOD` 就属于这一类
 - `Method Packs` 负责回答“是否要叠加专项工作方法”，例如链路确认
 - `Gate Packs` 负责回答“是否允许进入验证或完成”，例如评测门禁
+
+其中 `Governance Contract` 要特别解决两件事：
+
+- 当前任务文档（通常是 `docs/tasks/.../README.md`）是本轮协作的治理控制面，而不是聊天上下文的附属品
+- 分给 subagent 的不是“自由发挥任务”，而是带着最新规范、控制文档路径、当前轮次规划标记、非目标和完成标准的一次受控委派
 
 ---
 

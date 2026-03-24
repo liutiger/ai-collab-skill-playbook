@@ -16,6 +16,8 @@
 - **Copilot 适配层**：`.github/copilot-instructions.md`、`.github/instructions/`、`.github/prompts/` 由 `docs/skills-src/` 自动生成
 
 > `TDD / ACD / AOD` 是 **Orchestrator 之下的 Strategy Packs**，不是默认外显入口。它们通过 `14-mode-catalog.md` 和 `17~19` 参与总控决策。
+>
+> 当前任务文档（通常是 `docs/tasks/.../README.md`）默认就是治理控制面：首轮完整阅读，后续以增量补充检查为主；若把任务委派给 subagent，也必须把这份控制面一起传递。
 
 ## Source Of Truth
 

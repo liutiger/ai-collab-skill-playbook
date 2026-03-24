@@ -139,6 +139,32 @@ def main() -> int:
             "copilot manifest declares shared lifecycle refs and requirements",
         )
     )
+    governance_prompt_path = root / "docs/prompts/15-governance-lifecycle-contract.md"
+    governance_prompt_text = governance_prompt_path.read_text(encoding="utf-8") if governance_prompt_path.exists() else ""
+    checks.append(
+        (
+            "governance_subcontracts",
+            all(
+                token in governance_prompt_text
+                for token in (
+                    "Policy Sync Contract",
+                    "Task Record Contract",
+                    "Delta Check Contract",
+                    "Human Confirmation Contract",
+                    "Delegation Contract",
+                    "治理控制面",
+                )
+            ),
+            "governance contract includes the five governance subcontracts and task document control-plane guidance",
+        )
+    )
+    checks.append(
+        (
+            "governance_no_stage_leak",
+            "Stage 决定" not in governance_prompt_text,
+            "governance contract no longer exposes stage language in the public default body",
+        )
+    )
     checks.append(
         (
             "runtime_not_in_default_paths",
@@ -193,6 +219,35 @@ def main() -> int:
             and "同一线程" in orchestrator_text
             and "一次性汇总" in orchestrator_text,
             "orchestrator prompt loads governance/scene/method/strategy catalogs and exposes the single default entry",
+        )
+    )
+    orchestrator_source_path = root / "docs/prompts/16-governance-orchestrator.md"
+    orchestrator_source_text = (
+        orchestrator_source_path.read_text(encoding="utf-8") if orchestrator_source_path.exists() else ""
+    )
+    checks.append(
+        (
+            "orchestrator_control_plane",
+            "当前控制文档" in orchestrator_source_text and "增量补充检查结果" in orchestrator_source_text,
+            "orchestrator source prompt keeps the task document as the governance control plane",
+        )
+    )
+    adapter_ref_path = root / "docs/skills-src/wms/governance-orchestrator/references/platform-confirmation-adapter.md"
+    adapter_ref_text = adapter_ref_path.read_text(encoding="utf-8") if adapter_ref_path.exists() else ""
+    delegation_ref_path = root / "docs/skills-src/wms/governance-orchestrator/references/delegation-payload.md"
+    delegation_ref_text = delegation_ref_path.read_text(encoding="utf-8") if delegation_ref_path.exists() else ""
+    checks.append(
+        (
+            "orchestrator_platform_adapter",
+            "askQuestions" in adapter_ref_text and "显式发问" in adapter_ref_text and "默认继续检查文档" in adapter_ref_text,
+            "platform confirmation adapter maps askQuestions and fallback behavior outside governance body",
+        )
+    )
+    checks.append(
+        (
+            "orchestrator_delegation_payload",
+            "Delegation Payload" in delegation_ref_text and "控制文档" in delegation_ref_text and "完成标准" in delegation_ref_text,
+            "delegation payload reference exists for subagent inheritance",
         )
     )
 
