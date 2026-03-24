@@ -1,0 +1,3 @@
+display_name: ACD Mode
+short_description: Architecture-confirmation execution profile for high-risk or cross-boundary work.
+default_prompt: Use this mode when the task requires architecture, contract, or boundary confirmation before implementation.

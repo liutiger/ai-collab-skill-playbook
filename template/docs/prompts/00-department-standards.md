@@ -1,6 +1,6 @@
 # 研发部门规范（每次对话必带）
 
-> **Layer 2 兼容入口**。权威工作法以下列 Skill 为准：
+> **Governance 兼容入口**。权威工作法以下列 Skill 为准：
 > - `wms-task-governance`
 > - `gitnexus-code-navigation`
 >
@@ -72,7 +72,7 @@ docs/tasks/{年份}/{MM}-[ISSUE]-{简描}/    # 问题排查
 3. 检查 `【待处理】`/`TODO`/`- [ ]`/`【补充】`/`【更新】` 等标记，纳入当前计划
 4. 无历史文档 = 直接通过
 
-> **STEP-1~3（含 1.5）完成后，进入 Layer 3 Prompt 或对应 Skill。**
+> **STEP-1~3（含 1.5）完成后，进入 Orchestrator / Scene / Stage / Method 对应入口。**
 
 ---
 
@@ -217,12 +217,14 @@ docs/tasks/{年份}/{MM}-[ISSUE]-{简描}/    # 问题排查
 
 ---
 
-## Layer 关系
+## 五层关系中的定位
 
 | 维度 | 控制方 |
 |------|--------|
-| curl wiki + GitNexus 优先定位 + 任务目录 + 完成标记 + 通用落盘 + 通用文件格式 | **Layer 2（本文件）** |
-| README 输出格式 + 场景专属检查清单 | **Layer 3（场景提示词）** |
+| curl 规则源 + GitNexus 优先定位 + 任务目录 + 完成标记 + 通用落盘 + 通用文件格式 | **Governance（本文件）** |
+| 主场景专项检查清单 | **Scene** |
+| 方案 / 实现 / 评测推进 | **Stage** |
+| 链路确认等专项协议 | **Method** |
 
-- Layer 2 通用规则 + Layer 3 补充 = **叠加**，不是替代
-- 同一规则冲突时，**Layer 3 > Layer 2**（场景更具体）
+- `Governance` 与 `15-governance-lifecycle-contract.md` 一起提供共享硬边界
+- `Scene / Stage / Method` 在其之上叠加，不替代本文件

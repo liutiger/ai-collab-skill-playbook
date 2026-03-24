@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -24,14 +23,39 @@ def render_markdown_table(headers: list[str], rows: list[list[str]]) -> str:
     return "\n".join([header_row, separator_row, *body_rows])
 
 
-def render_prompt_table(prompt_specs: list[dict]) -> str:
+def prompt_kind_label(kind: str) -> str:
+    return {
+        "router": "总控",
+        "stage": "阶段",
+        "method": "专项方法",
+        "mode": "模式",
+    }.get(kind, kind)
+
+
+def dedupe_preserve_order(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for item in items:
+        if item in seen:
+            continue
+        seen.add(item)
+        result.append(item)
+    return result
+
+
+def render_numbered(items: list[str]) -> str:
+    return "\n".join(f"{index}. {item}" for index, item in enumerate(items, start=1))
+
+
+def render_prompt_table(prompt_specs: list[dict], shared_refs: list[str]) -> str:
     rows = []
     for spec in prompt_specs:
         command = f"`/{spec['id']}`"
+        kind = prompt_kind_label(spec.get("kind", "stage"))
         desc = spec["description"]
-        refs = " + ".join(f"`{Path(ref).name}`" for ref in spec["refs"])
-        rows.append([command, desc, refs])
-    return render_markdown_table(["Slash Prompt", "用途", "兼容入口"], rows)
+        refs = " + ".join(f"`{Path(ref).name}`" for ref in dedupe_preserve_order([*shared_refs, *spec["refs"]]))
+        rows.append([kind, command, desc, refs])
+    return render_markdown_table(["分类", "Slash Prompt", "用途", "兼容入口"], rows)
 
 
 def render_routing_table(prompt_specs: list[dict]) -> str:
@@ -39,8 +63,9 @@ def render_routing_table(prompt_specs: list[dict]) -> str:
     for spec in prompt_specs:
         trigger_text = " / ".join(f"`{item}`" for item in spec["triggers"])
         route_text = f"`/{spec['id']}`"
-        rows.append([trigger_text, route_text, spec["description"]])
-    return render_markdown_table(["用户信号", "优先工作流", "说明"], rows)
+        kind = prompt_kind_label(spec.get("kind", "stage"))
+        rows.append([kind, trigger_text, route_text, spec["description"]])
+    return render_markdown_table(["分类", "用户信号", "优先工作流", "说明"], rows)
 
 
 def render_path_instruction_table(instructions: list[dict]) -> str:
@@ -52,22 +77,24 @@ def render_path_instruction_table(instructions: list[dict]) -> str:
     return render_markdown_table(["运行产物", "源码"], rows)
 
 
-def render_prompt_file(spec: dict) -> str:
-    refs = "\n".join(f"#file:{ref}" for ref in spec["refs"])
-    requirements = "\n".join(
-        f"{index}. {item}" for index, item in enumerate(spec.get("requirements", []), start=1)
-    )
+def render_prompt_file(spec: dict, shared_refs: list[str], shared_requirements: list[str]) -> str:
+    refs = dedupe_preserve_order([*shared_refs, *spec["refs"]])
+    refs_text = "\n".join(f"#file:{ref}" for ref in refs)
+    lifecycle_requirements = render_numbered(shared_requirements)
+    entry_requirements = render_numbered(spec.get("requirements", []))
     return (
         f"---\n"
         f"description: {json.dumps(spec['description'], ensure_ascii=False)}\n"
         f"---\n\n"
-        f"{refs}\n\n"
+        f"{refs_text}\n\n"
         f"任务：\n"
         f"${{input:task:描述本次任务、异常或改动目标}}\n\n"
         f"补充信息：\n"
         f"${{input:extra:补充验收标准、日志、范围、风险点或可留空}}\n\n"
-        f"执行要求：\n"
-        f"{requirements}\n"
+        f"共享治理生命周期合同：\n"
+        f"{lifecycle_requirements}\n\n"
+        f"本入口专项要求：\n"
+        f"{entry_requirements}\n"
     )
 
 
@@ -77,10 +104,12 @@ def expected_files(root: Path, manifest: dict) -> dict[str, bytes]:
     repo_source = source_root / copilot["repoInstructionsSource"]
     prompt_specs = copilot["promptFiles"]
     instruction_specs = copilot["instructions"]
+    shared_refs = copilot.get("sharedRefs", [])
+    shared_requirements = copilot.get("sharedRequirements", [])
 
     repo_text = repo_source.read_text(encoding="utf-8")
     repo_text = repo_text.replace("{{ROUTING_TABLE}}", render_routing_table(prompt_specs))
-    repo_text = repo_text.replace("{{PROMPT_TABLE}}", render_prompt_table(prompt_specs))
+    repo_text = repo_text.replace("{{PROMPT_TABLE}}", render_prompt_table(prompt_specs, shared_refs))
     repo_text = repo_text.replace("{{PATH_INSTRUCTION_TABLE}}", render_path_instruction_table(instruction_specs))
 
     files: dict[str, bytes] = {"copilot-instructions.md": repo_text.encode("utf-8")}
@@ -90,7 +119,7 @@ def expected_files(root: Path, manifest: dict) -> dict[str, bytes]:
         files[rel_target] = (source_root / item["source"]).read_bytes()
 
     for spec in prompt_specs:
-        files[spec["filename"]] = render_prompt_file(spec).encode("utf-8")
+        files[spec["filename"]] = render_prompt_file(spec, shared_refs, shared_requirements).encode("utf-8")
 
     inventory_rel = copilot["inventoryFile"]
     inventory = {"managedPaths": sorted(files.keys())}
@@ -175,12 +204,13 @@ def sync(expected: dict[str, bytes], target_root: Path, inventory_rel: str, clea
                 path.unlink()
                 removed.append(rel)
 
-        for directory in sorted((target_root / "prompts").rglob("*"), reverse=True):
-            if directory.is_dir() and not any(directory.iterdir()):
-                directory.rmdir()
-        for directory in sorted((target_root / "instructions").rglob("*"), reverse=True):
-            if directory.is_dir() and not any(directory.iterdir()):
-                directory.rmdir()
+        for directory_name in ("prompts", "instructions"):
+            directory = target_root / directory_name
+            if not directory.exists():
+                continue
+            for path in sorted(directory.rglob("*"), reverse=True):
+                if path.is_dir() and not any(path.iterdir()):
+                    path.rmdir()
 
     return created, updated, removed
 
@@ -229,19 +259,7 @@ def main() -> int:
     print(f"  Removed: {len(removed)}")
 
     if stale and not args.clean_stale:
-        print("  Note: stale managed files remain. Re-run with --clean-stale to remove them.")
-    if created:
-        print("  Created files:")
-        for item in created:
-            print(f"    - {item}")
-    if updated:
-        print("  Updated files:")
-        for item in updated:
-            print(f"    - {item}")
-    if removed:
-        print("  Removed files:")
-        for item in removed:
-            print(f"    - {item}")
+        print("  Hint: rerun with --clean-stale to remove obsolete generated files.")
 
     return 0
 

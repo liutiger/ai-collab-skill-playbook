@@ -161,4 +161,4 @@ npx gitnexus impact "StorehouseTransferExecuteServiceImpl.createTransferOrder"
 3. [ ] 涉及公共符号/核心方法改动时，已做影响分析
 4. [ ] 已结合对应场景提示词完成专项检查
 5. [ ] 涉及代码 / SQL / 配置改动时，已生成 `artifacts/eval-report.md`
-6. [ ] 仅在评测门禁允许完成后，才按 Layer 2 要求完成落盘和完成标记
+6. [ ] 仅在评测门禁允许完成后，才按 Governance 要求完成落盘和完成标记

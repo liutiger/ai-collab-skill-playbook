@@ -17,6 +17,8 @@
 
 ## Scene 1：新功能开发
 
+> 对应 Skill：`feature-dev-scene`
+
 ### 适用信号
 
 - 新增能力、扩展接口、补业务分支、支持新规则
@@ -52,6 +54,8 @@
 ---
 
 ## Scene 2：线上问题排查
+
+> 对应 Skill：`issue-investigation-scene`
 
 ### 适用信号
 
@@ -89,6 +93,8 @@
 
 ## Scene 3：代码审查
 
+> 对应 Skill：`code-review-scene`
+
 ### 适用信号
 
 - Review PR、审 diff、查风险、找回归点
@@ -121,6 +127,8 @@
 ---
 
 ## Scene 4：数据库变更
+
+> 对应 Skill：`database-change-scene`
 
 ### 适用信号
 
@@ -157,6 +165,8 @@
 
 ## Scene 5：重构优化
 
+> 对应 Skill：`refactoring-scene`
+
 ### 适用信号
 
 - 重构、拆分、抽象、简化结构、行为不变优化
@@ -190,6 +200,8 @@
 ---
 
 ## Scene 6：文档编写
+
+> 对应 Skill：`documentation-scene`
 
 ### 适用信号
 

@@ -1,0 +1,3 @@
+display_name: TDD Mode
+short_description: Test-driven execution profile for clear, testable changes.
+default_prompt: Use this mode when acceptance criteria are clear enough to define failing tests or assertions before implementation.

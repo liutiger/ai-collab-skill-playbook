@@ -21,15 +21,6 @@
   - `example-datasource`
   - `example-deduction`
   - `example-feign-service`
-- 典型任务：
-  - 新功能开发
-  - 线上问题排查
-  - Code Review
-  - 数据库变更
-  - 重构优化
-  - 文档沉淀
-  - 链路确认
-  - 自动评测与交付验收
 
 ## 设计原则
 
@@ -39,3 +30,4 @@
 - 兼容入口放在 `docs/prompts/`
 - GitHub Copilot 入口放在 `.github/`
 - Claude 风格运行时入口放在 `.claude/skills/`
+- `TDD / ACD / AOD` 作为总控下的执行模式，不作为新增架构层

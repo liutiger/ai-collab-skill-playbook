@@ -1,3 +1,0 @@
-display_name: Auto Dev Orchestrator
-short_description: Runs WMS tasks through a full multi-role delivery loop from understanding to validation and docs sink.
-default_prompt: Use this skill when a WMS task should run through analysis, implementation, review, verification, and documentation as one controlled loop.

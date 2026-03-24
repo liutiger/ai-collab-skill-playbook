@@ -61,13 +61,13 @@ def main() -> int:
         for skill in manifest["skills"]
         if skill["type"] == "scene"
     )
-    checks.append(
-        (
-            "scene_runtime_exposure",
-            scene_exposures_ok,
-            "scene skills stay source-only to avoid runtime trigger interference",
-        )
+    mode_exposures_ok = all(
+        skill.get("runtimeExposure") == "source-only"
+        for skill in manifest["skills"]
+        if skill["type"] == "mode"
     )
+    checks.append(("scene_runtime_exposure", scene_exposures_ok, "scene skills stay source-only"))
+    checks.append(("mode_runtime_exposure", mode_exposures_ok, "mode skills stay source-only"))
 
     for skill_meta in manifest["skills"]:
         prompt_hits = []
@@ -108,13 +108,10 @@ def main() -> int:
 
     repo_instructions_path = copilot_target_root / "copilot-instructions.md"
     repo_text = repo_instructions_path.read_text(encoding="utf-8") if repo_instructions_path.exists() else ""
-    checks.append(
-        (
-            "copilot_repo_instructions_exists",
-            repo_instructions_path.exists(),
-            str(repo_instructions_path.relative_to(root)),
-        )
-    )
+    shared_refs = copilot.get("sharedRefs", [])
+    shared_requirements = copilot.get("sharedRequirements", [])
+
+    checks.append(("copilot_repo_instructions_exists", repo_instructions_path.exists(), str(repo_instructions_path.relative_to(root))))
     checks.append(
         (
             "copilot_repo_mentions_slash_prompts",
@@ -129,6 +126,16 @@ def main() -> int:
             "repository instructions anchored to charter",
         )
     )
+    checks.append(
+        (
+            "copilot_shared_lifecycle_contract",
+            "docs/prompts/15-governance-lifecycle-contract.md" in shared_refs
+            and any("规划任务" in item for item in shared_requirements)
+            and any("继续检查文档" in item for item in shared_requirements),
+            "copilot manifest declares shared lifecycle refs and requirements",
+        )
+    )
+
     scene_catalog_path = root / "docs/prompts/12-scene-catalog.md"
     scene_catalog_text = scene_catalog_path.read_text(encoding="utf-8") if scene_catalog_path.exists() else ""
     checks.append(
@@ -138,68 +145,115 @@ def main() -> int:
             str(scene_catalog_path.relative_to(root)),
         )
     )
-    scene_router_path = copilot_target_root / "prompts/wms-scene-router.prompt.md"
-    scene_router_text = scene_router_path.read_text(encoding="utf-8") if scene_router_path.exists() else ""
+
+    method_catalog_path = root / "docs/prompts/13-method-catalog.md"
+    method_catalog_text = method_catalog_path.read_text(encoding="utf-8") if method_catalog_path.exists() else ""
     checks.append(
         (
-            "copilot_scene_router_guard",
-            "12-scene-catalog.md" in scene_router_text
-            and "新增功能" in repo_text
-            and "帮我 review" in repo_text
-            and "DDL" in repo_text
-            and "/wms-scene-router" in repo_text,
-            "scene-router prompt loads the unified scene catalog and repo routing covers representative natural signals",
+            "method_catalog_exists",
+            method_catalog_path.exists() and "Method 1" in method_catalog_text,
+            str(method_catalog_path.relative_to(root)),
         )
     )
-    auto_dev_path = copilot_target_root / "prompts/wms-auto-dev.prompt.md"
-    auto_dev_text = auto_dev_path.read_text(encoding="utf-8") if auto_dev_path.exists() else ""
+
+    mode_catalog_path = root / "docs/prompts/14-mode-catalog.md"
+    mode_catalog_text = mode_catalog_path.read_text(encoding="utf-8") if mode_catalog_path.exists() else ""
     checks.append(
         (
-            "copilot_auto_dev_scene_guard",
-            "11-scene-router.md" in auto_dev_text
-            and "12-scene-catalog.md" in auto_dev_text
-            and "高风险条件" in auto_dev_text
-            and "待人工确认后再实现" in auto_dev_text,
-            "auto-dev prompt enforces scene routing, scene catalog loading and plan gate",
+            "mode_catalog_exists",
+            mode_catalog_path.exists() and "Mode 1" in mode_catalog_text and "Mode 3" in mode_catalog_text,
+            str(mode_catalog_path.relative_to(root)),
         )
     )
-    plan_gate_path = copilot_target_root / "prompts/wms-plan-gate.prompt.md"
-    plan_gate_text = plan_gate_path.read_text(encoding="utf-8") if plan_gate_path.exists() else ""
+
+    orchestrator_path = copilot_target_root / "prompts/wms-orchestrator.prompt.md"
+    orchestrator_text = orchestrator_path.read_text(encoding="utf-8") if orchestrator_path.exists() else ""
     checks.append(
         (
-            "copilot_plan_gate_scene_guard",
-            "11-scene-router.md" in plan_gate_text
-            and "12-scene-catalog.md" in plan_gate_text
-            and "停在待确认" in plan_gate_text
-            and "高风险条件" in plan_gate_text,
-            "plan-gate prompt enforces scene routing, scene catalog loading and hold",
-        )
-    )
-    evaluation_gate_path = copilot_target_root / "prompts/wms-evaluation-gate.prompt.md"
-    evaluation_gate_text = evaluation_gate_path.read_text(encoding="utf-8") if evaluation_gate_path.exists() else ""
-    checks.append(
-        (
-            "copilot_evaluation_gate_guard",
-            "PASS / CONDITIONAL_PASS / BLOCKED / FAIL" in evaluation_gate_text
-            and "不得写完成标记" in evaluation_gate_text,
-            "evaluation-gate prompt enforces verdict and completion guard",
-        )
-    )
-    checks.append(
-        (
-            "copilot_auto_dev_eval_gate",
-            "评测门禁" in auto_dev_text and "完成标记" in auto_dev_text,
-            "auto-dev prompt includes evaluation gate before completion",
+            "copilot_orchestrator_guard",
+            "15-governance-lifecycle-contract.md" in orchestrator_text
+            and "12-scene-catalog.md" in orchestrator_text
+            and "13-method-catalog.md" in orchestrator_text
+            and "14-mode-catalog.md" in orchestrator_text
+            and "16-governance-orchestrator.md" in orchestrator_text
+            and "/wms-orchestrator" in repo_text
+            and "同一线程" in orchestrator_text
+            and "一次性汇总" in orchestrator_text,
+            "orchestrator prompt loads governance/scene/method/mode catalogs and exposes the single default entry",
         )
     )
 
     checks.append(
         (
-            "manual_fixture_count",
-            len(fixture_metas) >= 5,
-            f"fixtureCount={len(fixture_metas)}",
+            "copilot_no_legacy_default_prompts",
+            not (copilot_target_root / "prompts/wms-scene-router.prompt.md").exists()
+            and not (copilot_target_root / "prompts/wms-plan-gate.prompt.md").exists()
+            and not (copilot_target_root / "prompts/wms-auto-dev.prompt.md").exists(),
+            "legacy public default prompts were removed from generated Copilot assets",
         )
     )
+
+    link_trace_path = copilot_target_root / "prompts/wms-link-trace.prompt.md"
+    link_trace_text = link_trace_path.read_text(encoding="utf-8") if link_trace_path.exists() else ""
+    checks.append(
+        (
+            "copilot_link_trace_guard",
+            "15-governance-lifecycle-contract.md" in link_trace_text
+            and "13-method-catalog.md" in link_trace_text
+            and "08-link-confirmation.md" in link_trace_text
+            and "/wms-link-trace" in repo_text,
+            "link-trace prompt is generated as a method entry and anchored in repo instructions",
+        )
+    )
+
+    evaluation_gate_path = copilot_target_root / "prompts/wms-evaluation-gate.prompt.md"
+    evaluation_gate_text = evaluation_gate_path.read_text(encoding="utf-8") if evaluation_gate_path.exists() else ""
+    checks.append(
+        (
+            "copilot_evaluation_gate_guard",
+            "15-governance-lifecycle-contract.md" in evaluation_gate_text
+            and "PASS / CONDITIONAL_PASS / BLOCKED / FAIL" in evaluation_gate_text
+            and "不得写完成标记" in evaluation_gate_text,
+            "evaluation-gate prompt enforces verdict and completion guard",
+        )
+    )
+
+    mode_prompt_expectations = {
+        "wms-tdd.prompt.md": ("17-tdd-mode.md", "14-mode-catalog.md", "测试"),
+        "wms-acd.prompt.md": ("18-acd-mode.md", "14-mode-catalog.md", "架构"),
+        "wms-aod.prompt.md": ("19-aod-mode.md", "14-mode-catalog.md", "证据"),
+    }
+    for filename, (mode_ref, catalog_ref, keyword) in mode_prompt_expectations.items():
+        text = (copilot_target_root / "prompts" / filename).read_text(encoding="utf-8")
+        checks.append(
+            (
+                f"mode_prompt_{filename}",
+                "15-governance-lifecycle-contract.md" in text
+                and catalog_ref in text
+                and mode_ref in text
+                and keyword in text,
+                filename,
+            )
+        )
+
+    all_prompt_texts = []
+    for prompt_filename in expected_prompt_files:
+        prompt_path = copilot_target_root / "prompts" / prompt_filename
+        all_prompt_texts.append(prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else "")
+    checks.append(
+        (
+            "copilot_all_prompts_inherit_lifecycle_contract",
+            all(
+                "15-governance-lifecycle-contract.md" in text
+                and "规划任务" in text
+                and "继续检查文档" in text
+                for text in all_prompt_texts
+            ),
+            "all generated prompt files inherit the shared lifecycle contract",
+        )
+    )
+
+    checks.append(("manual_fixture_count", len(fixture_metas) >= 9, f"fixtureCount={len(fixture_metas)}"))
 
     for fixture_meta in fixture_metas:
         fixture_path = root / fixture_meta["file"]

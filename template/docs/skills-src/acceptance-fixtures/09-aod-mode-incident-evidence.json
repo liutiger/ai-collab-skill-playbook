@@ -1,0 +1,22 @@
+{
+  "id": "aod-mode-incident-evidence",
+  "title": "AOD 模式先补证再决定修复",
+  "skills": [
+    "governance-orchestrator",
+    "issue-investigation-scene",
+    "aod-mode",
+    "link-trace-and-curation"
+  ],
+  "prompt": "线上出现库存释放异常，日志和现象很多但根因不清，先按 AOD 盘点证据、梳理时间线和下一步验证动作，再决定是否进入修复。",
+  "expectedFocus": [
+    "先列已知证据和缺失证据",
+    "先说明时间线与影响范围",
+    "先给验证动作和止血建议",
+    "证据不足时不把猜测写成结论"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-[ISSUE]-任务名/README.md",
+    "ai-conversations/01-初步分析.md",
+    "artifacts/link-trace.md"
+  ]
+}

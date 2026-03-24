@@ -13,6 +13,7 @@ description: "Use only when the task is approved feature implementation or capab
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`

@@ -1,0 +1,3 @@
+display_name: Governance Orchestrator
+short_description: Default WMS entry that auto-routes scene, execution mode, stage, and methods, batches confirmations, and continues in the same thread.
+default_prompt: Use this skill as the default WMS orchestrator when the task should automatically route scene, choose execution mode, choose stage, batch hard-gate confirmations, and continue in the same thread.

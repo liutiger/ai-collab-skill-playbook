@@ -9,6 +9,15 @@
     "targetRoot": ".github",
     "repoInstructionsSource": "repository-instructions.md",
     "inventoryFile": ".wms-copilot-generated.json",
+    "sharedRefs": [
+      "docs/prompts/00-department-standards.md",
+      "docs/prompts/15-governance-lifecycle-contract.md"
+    ],
+    "sharedRequirements": [
+      "开始当前轮次前，先读取最新团队规范源、回查任务文档新增补充要求，并写入本轮 `规划任务:` 标记；若涉及命令执行，优先准备 tmux",
+      "准备结束当前轮次前，必须执行共享结束协议：回查 README 与 artifacts、判断是否允许写完成标记，并显式确认“本文档中的任务是否已经处理完毕”；若平台不支持输入框，则默认按“需要继续检查文档”处理",
+      "若本轮存在必须确认的 hard gate，必须一次性汇总所有 hard gate；用户在同一线程回复后，默认沿当前总控入口继续，不要求重新切换 prompt 或重开会话"
+    ],
     "instructions": [
       {
         "source": "instructions/wms-java.instructions.md",
@@ -21,53 +30,36 @@
     ],
     "promptFiles": [
       {
-        "id": "wms-plan-gate",
-        "filename": "prompts/wms-plan-gate.prompt.md",
-        "description": "WMS 通用方案确认总控：先经场景路由判主场景，再澄清目标、定位上下文、给最小方案并停在待确认",
+        "id": "wms-orchestrator",
+        "kind": "router",
+        "filename": "prompts/wms-orchestrator.prompt.md",
+        "description": "WMS 单一总控入口：自动判定场景、执行模式、当前阶段和专项方法，默认在同一线程里先收敛、再实现、再验收",
         "triggers": [
-          "方案核对",
-          "先出方案",
-          "待确认",
-          "先定位上下文"
+          "新增功能",
+          "线上异常",
+          "帮我 review",
+          "DDL",
+          "重构",
+          "写文档",
+          "修复 bug",
+          "先出方案"
         ],
         "refs": [
-          "docs/prompts/00-department-standards.md",
-          "docs/prompts/11-scene-router.md",
           "docs/prompts/12-scene-catalog.md",
-          "docs/prompts/09-plan-gate.md"
+          "docs/prompts/13-method-catalog.md",
+          "docs/prompts/14-mode-catalog.md",
+          "docs/prompts/16-governance-orchestrator.md"
         ],
         "requirements": [
-          "先通过 scene-router 判定主场景；若无法明确，停在待确认",
-          "结合 scene-catalog 中对应章节，明确该主场景的专项检查重点、风险控制和产出物要求",
-          "再按 Planner / Context Analyst / Solution Architect 输出",
-          "若命中章程高风险条件（边界不清 / 跨模块 / 跨服务 / 公共接口 / 核心链路 / 方案存在取舍），必须停在“待确认”，不要进入实现"
-        ]
-      },
-      {
-        "id": "wms-auto-dev",
-        "filename": "prompts/wms-auto-dev.prompt.md",
-        "description": "WMS 通用多角色自动开发总控：先经场景路由判主场景，再在满足条件时进入分析、实现、自检、评测门禁、落盘闭环",
-        "triggers": [
-          "自动开发",
-          "多角色自动开发",
-          "完整闭环",
-          "分析实现测试落盘"
-        ],
-        "refs": [
-          "docs/prompts/00-department-standards.md",
-          "docs/prompts/11-scene-router.md",
-          "docs/prompts/12-scene-catalog.md",
-          "docs/prompts/07-auto-dev-orchestration.md"
-        ],
-        "requirements": [
-          "先通过 scene-router 判定主场景或标记为跨场景，并结合 scene-catalog 对应章节说明采用的专项检查点",
-          "若场景不清或命中章程高风险条件（边界不清 / 跨模块 / 跨服务 / 公共接口 / 核心链路 / 方案存在取舍），先停在方案阶段，待人工确认后再实现",
-          "确认可以继续后，再按 Planner / Context Analyst / Solution Architect / Implementer / Reviewer & Tester / Evaluator / Gatekeeper / Documenter 分阶段执行",
-          "结束前必须完成自检、评测门禁结论和 docs/tasks 沉淀；若门禁未通过，不得写完成标记"
+          "默认先用统一场景目录判主场景，再结合模式目录选择 TDD / ACD / AOD 中最合适的执行模式",
+          "高风险、跨模块、公共接口或方案存在取舍时，自动收敛到 ACD 风格的方案确认，不直接进入实现",
+          "若任务以证据链、日志、链路、副作用为主，自动切到 AOD 风格的分析补证；若目标明确且验收可测试，优先采用 TDD 风格",
+          "若存在必须确认的阻塞点，必须一次性汇总全部 hard gate；用户在同一线程答复后沿当前总控继续，不要求切换到别的 prompt"
         ]
       },
       {
         "id": "wms-evaluation-gate",
+        "kind": "stage",
         "filename": "prompts/wms-evaluation-gate.prompt.md",
         "description": "WMS 自动评测与交付验收门禁：确定评测范围、执行必要门禁、输出结构化评测结论，并决定是否允许完成",
         "triggers": [
@@ -77,7 +69,6 @@
           "跑测试后给结论"
         ],
         "refs": [
-          "docs/prompts/00-department-standards.md",
           "docs/prompts/10-evaluation-gate.md"
         ],
         "requirements": [
@@ -89,8 +80,9 @@
       },
       {
         "id": "wms-link-trace",
+        "kind": "method",
         "filename": "prompts/wms-link-trace.prompt.md",
-        "description": "WMS 链路确认：确认真实执行链路、分支和副作用，并沉淀到 docs",
+        "description": "WMS 专项方法：链路确认，确认真实执行链路、分支和副作用，并沉淀到 docs",
         "triggers": [
           "确认链路",
           "有没有真正落盘",
@@ -98,7 +90,7 @@
           "副作用点"
         ],
         "refs": [
-          "docs/prompts/00-department-standards.md",
+          "docs/prompts/13-method-catalog.md",
           "docs/prompts/08-link-confirmation.md"
         ],
         "requirements": [
@@ -109,29 +101,69 @@
         ]
       },
       {
-        "id": "wms-scene-router",
-        "filename": "prompts/wms-scene-router.prompt.md",
-        "description": "WMS 场景路由入口：识别功能开发、排障、Review、数据库变更、重构或文档任务，并结合统一场景目录推荐下一步阶段入口",
+        "id": "wms-tdd",
+        "kind": "mode",
+        "filename": "prompts/wms-tdd.prompt.md",
+        "description": "WMS 模式入口：TDD（测试驱动交付），先收敛验收标准与失败测试，再做最小实现和回归验证",
         "triggers": [
-          "新增功能",
-          "线上异常",
-          "帮我 review",
-          "DDL",
-          "重构",
-          "写文档",
-          "该走哪个流程",
-          "帮我判断场景"
+          "TDD",
+          "测试驱动",
+          "先写测试",
+          "先红后绿"
         ],
         "refs": [
-          "docs/prompts/00-department-standards.md",
-          "docs/prompts/11-scene-router.md",
-          "docs/prompts/12-scene-catalog.md"
+          "docs/prompts/14-mode-catalog.md",
+          "docs/prompts/17-tdd-mode.md"
         ],
         "requirements": [
-          "必须在 01~06 中选择一个主场景；必要时最多补一个次场景",
-          "输出命中信号、专项检查重点、默认产出物和下一步推荐入口",
-          "专项检查点必须来自 scene-catalog 中对应章节，而不是临场自由发挥",
-          "若边界不清或命中高风险条件，下一步必须推荐 /wms-plan-gate；若改动已存在则优先推荐 /wms-evaluation-gate；若目标是确认真实链路，则优先推荐 /wms-link-trace"
+          "把当前任务固定在 TDD 模式，不再重新猜测模式",
+          "先把验收标准转成可验证的测试或断言，再决定最小改动范围",
+          "优先列出要新增或修改的测试点、失败信号和最小实现路径",
+          "若中途出现高风险架构取舍，回退到 ACD 风格确认；若证据不足，补充 AOD 式分析后再继续"
+        ]
+      },
+      {
+        "id": "wms-acd",
+        "kind": "mode",
+        "filename": "prompts/wms-acd.prompt.md",
+        "description": "WMS 模式入口：ACD（架构确认驱动），先收敛边界、方案与接口，再决定是否进入实现",
+        "triggers": [
+          "ACD",
+          "架构确认",
+          "先确认方案",
+          "跨模块方案"
+        ],
+        "refs": [
+          "docs/prompts/14-mode-catalog.md",
+          "docs/prompts/18-acd-mode.md"
+        ],
+        "requirements": [
+          "把当前任务固定在 ACD 模式，不直接进入实现闭环",
+          "先明确边界、约束、候选方案、取舍理由和回滚思路",
+          "涉及公共接口、数据库结构、跨模块或跨服务联动时，优先按 ACD 收敛",
+          "若方案已清楚且测试路径明确，可转入 TDD；若证据还不够，先补 AOD 式分析"
+        ]
+      },
+      {
+        "id": "wms-aod",
+        "kind": "mode",
+        "filename": "prompts/wms-aod.prompt.md",
+        "description": "WMS 模式入口：AOD（分析观察驱动），先补证、看日志、做链路和假设收敛，再决定是否修复",
+        "triggers": [
+          "AOD",
+          "先分析再动手",
+          "证据链",
+          "先排查补证"
+        ],
+        "refs": [
+          "docs/prompts/14-mode-catalog.md",
+          "docs/prompts/19-aod-mode.md"
+        ],
+        "requirements": [
+          "把当前任务固定在 AOD 模式，优先做证据盘点、链路观察和假设收敛",
+          "先明确已知证据、缺失证据、下一步验证动作和止血建议，不把猜测写成结论",
+          "适合线上排障、数据不一致、链路不清或用户只给现象不给明确需求的任务",
+          "若边界和方案已经收敛，可切到 ACD；若验收可测试且允许实现，可切到 TDD"
         ]
       }
     ]
@@ -160,17 +192,48 @@
     {
       "id": "evaluation-gate-feature-delivery",
       "file": "docs/skills-src/acceptance-fixtures/06-evaluation-gate-feature-delivery.json"
+    },
+    {
+      "id": "tdd-mode-red-green-refactor",
+      "file": "docs/skills-src/acceptance-fixtures/07-tdd-mode-red-green-refactor.json"
+    },
+    {
+      "id": "acd-mode-cross-module-contract",
+      "file": "docs/skills-src/acceptance-fixtures/08-acd-mode-cross-module-contract.json"
+    },
+    {
+      "id": "aod-mode-incident-evidence",
+      "file": "docs/skills-src/acceptance-fixtures/09-aod-mode-incident-evidence.json"
     }
   ],
   "skills": [
     {
-      "id": "wms-task-governance",
-      "type": "core",
+      "id": "governance-orchestrator",
+      "type": "orchestrator",
       "compatPrompts": [
-        "00-department-standards.md"
+        "16-governance-orchestrator.md"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "新增一个仓库功能，先自动判断场景和阶段，再在同一线程继续推进",
+        "线上问题排查，遇到待确认项时一次性汇总，让我确认后继续往下做"
+      ],
+      "negativeExamples": [
+        "只想跑一次评测门禁，不需要总控编排"
+      ],
+      "runtimeExposure": "active"
+    },
+    {
+      "id": "wms-task-governance",
+      "type": "foundation",
+      "compatPrompts": [
+        "00-department-standards.md",
+        "15-governance-lifecycle-contract.md"
       ],
       "expectedScripts": [
         "scripts/create_task_dir.sh",
+        "scripts/append_planning_marker.py",
         "scripts/append_completion_marker.py"
       ],
       "expectedAssets": [],
@@ -185,7 +248,7 @@
     },
     {
       "id": "gitnexus-code-navigation",
-      "type": "core",
+      "type": "foundation",
       "compatPrompts": [
         "00-department-standards.md",
         "07-auto-dev-orchestration.md",
@@ -206,8 +269,164 @@
       "runtimeExposure": "source-only"
     },
     {
+      "id": "feature-dev-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "01-feature-dev.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "gitnexus-code-navigation",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "新增一个仓库能力，需要判断层次归属和外部依赖影响",
+        "补一个小功能，但要确认 Query/Execute 和 DTO/Feign 边界"
+      ],
+      "negativeExamples": [
+        "线上 Broken Pipe 异常怎么排查"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "issue-investigation-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "02-issue-investigation.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "gitnexus-code-navigation",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "线上异常需要梳理时间线、影响范围和止血建议",
+        "数据不一致，需要先收集证据再判断是否修复"
+      ],
+      "negativeExamples": [
+        "新增一个查询接口并补测试"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "code-review-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "03-code-review.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "gitnexus-code-navigation",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "帮我 review 这个 PR，重点看事务、并发和正确性",
+        "按严重度列出问题，不要泛泛总结"
+      ],
+      "negativeExamples": [
+        "帮我补一版出库查询接口"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "database-change-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "04-database-change.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "gitnexus-code-navigation",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "评估一条 DDL 的联动影响和回滚方案",
+        "数据库变更需要分批、灰度和补偿策略"
+      ],
+      "negativeExamples": [
+        "只想确认这个 MQ 链路有没有真正发消息"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "refactoring-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "05-refactoring.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "gitnexus-code-navigation",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "我想重构这个库存模块，但要保证行为不变",
+        "先做风险分级，再拆提交和回滚策略"
+      ],
+      "negativeExamples": [
+        "线上异常先帮我止血"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "documentation-scene",
+      "type": "scene",
+      "compatPrompts": [
+        "06-documentation.md",
+        "12-scene-catalog.md"
+      ],
+      "requiredCoreRefs": [
+        "wms-task-governance",
+        "governance-orchestrator"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [],
+      "positiveExamples": [
+        "帮我整理一份链路说明文档，给新人能看懂",
+        "把这次改动沉淀成使用说明和知识库条目"
+      ],
+      "negativeExamples": [
+        "帮我直接改 mapper 和 service 实现"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
+      "id": "plan-gate",
+      "type": "stage",
+      "compatPrompts": [
+        "09-plan-gate.md"
+      ],
+      "expectedScripts": [],
+      "expectedAssets": [
+        "assets/templates/plan-gate.md"
+      ],
+      "positiveExamples": [
+        "先输出方案、风险和回滚思路，再决定是否进入实现",
+        "跨模块需求先停在待确认，不要直接改代码"
+      ],
+      "negativeExamples": [
+        "我只想确认这条 MQ 链路有没有真正消费"
+      ],
+      "runtimeExposure": "source-only"
+    },
+    {
       "id": "auto-dev-orchestrator",
-      "type": "core",
+      "type": "stage",
       "compatPrompts": [
         "07-auto-dev-orchestration.md"
       ],
@@ -215,20 +434,18 @@
       "expectedAssets": [],
       "positiveExamples": [
         "按完整闭环做这个功能：分析、实现、自检、落盘",
-        "复杂跨模块需求，直接走多角色自动开发流程"
+        "复杂跨模块需求，在确认后进入多角色自动开发流程"
       ],
       "negativeExamples": [
         "只帮我看一下这个类是干什么的"
       ],
-      "runtimeExposure": "active"
+      "runtimeExposure": "source-only"
     },
     {
       "id": "delivery-evaluation-gate",
-      "type": "core",
+      "type": "stage",
       "compatPrompts": [
-        "07-auto-dev-orchestration.md",
-        "10-evaluation-gate.md",
-        "01-feature-dev.md"
+        "10-evaluation-gate.md"
       ],
       "expectedScripts": [
         "scripts/run_maven_eval_gate.sh"
@@ -244,13 +461,14 @@
       "negativeExamples": [
         "只帮我建议几个可能要跑的命令，不需要真正给出门禁结论"
       ],
-      "runtimeExposure": "active"
+      "runtimeExposure": "source-only"
     },
     {
       "id": "link-trace-and-curation",
-      "type": "core",
+      "type": "method",
       "compatPrompts": [
-        "08-link-confirmation.md"
+        "08-link-confirmation.md",
+        "13-method-catalog.md"
       ],
       "expectedScripts": [],
       "expectedAssets": [
@@ -261,159 +479,61 @@
         "梳理这个 MQ 消费链路的关键副作用点并沉淀到 docs"
       ],
       "negativeExamples": [
-        "帮我把这个 DTO 改个名字"
-      ],
-      "runtimeExposure": "active"
-    },
-    {
-      "id": "plan-gate",
-      "type": "core",
-      "compatPrompts": [
-        "09-plan-gate.md"
-      ],
-      "expectedScripts": [],
-      "expectedAssets": [
-        "assets/templates/plan-gate.md"
-      ],
-      "positiveExamples": [
-        "先帮我出方案，等我确认后再实现",
-        "这个需求先做目标澄清、上下文定位和最小改动设计"
-      ],
-      "negativeExamples": [
-        "直接改完这个 bug 并提交结果"
-      ],
-      "runtimeExposure": "active"
-    },
-    {
-      "id": "feature-dev-scene",
-      "type": "scene",
-      "compatPrompts": [
-        "01-feature-dev.md"
-      ],
-      "expectedScripts": [],
-      "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator",
-        "delivery-evaluation-gate"
-      ],
-      "positiveExamples": [
-        "新增一个仓库接口并补齐 Query/Execute 分层",
-        "做一个新的入库功能，确认 Feign 和抵扣联动"
-      ],
-      "negativeExamples": [
-        "分析这个线上报错的根因"
+        "直接帮我补一个单元测试"
       ],
       "runtimeExposure": "source-only"
     },
     {
-      "id": "issue-investigation-scene",
-      "type": "scene",
+      "id": "tdd-mode",
+      "type": "mode",
       "compatPrompts": [
-        "02-issue-investigation.md"
+        "14-mode-catalog.md",
+        "17-tdd-mode.md"
       ],
       "expectedScripts": [],
       "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator"
-      ],
       "positiveExamples": [
-        "线上 broken pipe 异常，帮我先做排障",
-        "库存数据不一致，先给我时间线、止血和根因分析"
+        "这个功能验收标准明确，请按 TDD 先列测试点和失败信号",
+        "先把回归点写清楚，再做最小实现"
       ],
       "negativeExamples": [
-        "帮我写一份架构设计文档"
+        "这个线上异常根因不清，先不要写测试"
       ],
       "runtimeExposure": "source-only"
     },
     {
-      "id": "code-review-scene",
-      "type": "scene",
+      "id": "acd-mode",
+      "type": "mode",
       "compatPrompts": [
-        "03-code-review.md"
+        "14-mode-catalog.md",
+        "18-acd-mode.md"
       ],
       "expectedScripts": [],
       "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator"
-      ],
       "positiveExamples": [
-        "Review 这段 PR diff，按严重度列问题",
-        "审查这次库存改动有没有并发和事务风险"
+        "跨模块改动先按 ACD 收敛架构方案和接口边界",
+        "涉及公共契约，先确认方案和回滚，不直接实现"
       ],
       "negativeExamples": [
-        "帮我新增一个接口"
+        "只是补一个小断言，不需要走架构确认模式"
       ],
       "runtimeExposure": "source-only"
     },
     {
-      "id": "database-change-scene",
-      "type": "scene",
+      "id": "aod-mode",
+      "type": "mode",
       "compatPrompts": [
-        "04-database-change.md"
+        "14-mode-catalog.md",
+        "19-aod-mode.md"
       ],
       "expectedScripts": [],
       "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator"
-      ],
       "positiveExamples": [
-        "这次字段变更会影响哪些 Mapper 和同步链路",
-        "评审这段 DDL/DML 的锁表和回滚风险"
+        "现象很多但证据不够，先按 AOD 梳理证据和假设",
+        "线上问题排查先补证，不直接猜根因或写代码"
       ],
       "negativeExamples": [
-        "帮我梳理一条 MQ 链路"
-      ],
-      "runtimeExposure": "source-only"
-    },
-    {
-      "id": "refactoring-scene",
-      "type": "scene",
-      "compatPrompts": [
-        "05-refactoring.md"
-      ],
-      "expectedScripts": [],
-      "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator"
-      ],
-      "positiveExamples": [
-        "把这个超长方法拆分成小步重构方案",
-        "重构这个 Service，但要保证行为不变"
-      ],
-      "negativeExamples": [
-        "帮我新增一个数据库字段"
-      ],
-      "runtimeExposure": "source-only"
-    },
-    {
-      "id": "documentation-scene",
-      "type": "scene",
-      "compatPrompts": [
-        "06-documentation.md"
-      ],
-      "expectedScripts": [],
-      "expectedAssets": [],
-      "requiredCoreRefs": [
-        "wms-task-governance",
-        "gitnexus-code-navigation",
-        "auto-dev-orchestrator"
-      ],
-      "positiveExamples": [
-        "写一份业务流程文档并标明关键类和方法",
-        "把这次排障沉淀成知识库文档"
-      ],
-      "negativeExamples": [
-        "直接给我改代码"
+        "需求已经很明确，直接按验收补测试更合适"
       ],
       "runtimeExposure": "source-only"
     }

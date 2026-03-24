@@ -1,0 +1,22 @@
+{
+  "id": "tdd-mode-red-green-refactor",
+  "title": "TDD 模式先定义测试点再做最小实现",
+  "skills": [
+    "governance-orchestrator",
+    "feature-dev-scene",
+    "tdd-mode",
+    "delivery-evaluation-gate"
+  ],
+  "prompt": "给库存查询新增一个明确的筛选条件，先按 TDD 收敛测试点、失败信号和最小实现，再进入评测门禁。",
+  "expectedFocus": [
+    "先把验收标准转成测试点",
+    "先说明失败信号，不直接跳实现",
+    "实现路径保持最小",
+    "收尾进入评测门禁"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-任务名/README.md",
+    "artifacts/eval-plan.md",
+    "artifacts/eval-report.md"
+  ]
+}

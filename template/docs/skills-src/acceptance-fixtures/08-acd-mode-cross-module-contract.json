@@ -1,0 +1,21 @@
+{
+  "id": "acd-mode-cross-module-contract",
+  "title": "ACD 模式先做架构确认",
+  "skills": [
+    "governance-orchestrator",
+    "feature-dev-scene",
+    "database-change-scene",
+    "acd-mode"
+  ],
+  "prompt": "新增一个跨模块库存同步能力，涉及公共接口和数据库字段，先按 ACD 收敛边界、候选方案、回滚和待确认项。",
+  "expectedFocus": [
+    "先明确边界和约束",
+    "先列候选方案与取舍",
+    "人工确认前不进入实现",
+    "明确回滚和验证方式"
+  ],
+  "expectedArtifacts": [
+    "docs/tasks/{年份}/{MM}-任务名/README.md",
+    "artifacts/plan-gate.md"
+  ]
+}

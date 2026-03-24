@@ -13,6 +13,7 @@ description: "Use only when reviewing an existing diff, PR, or code change set. 
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`

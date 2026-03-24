@@ -14,6 +14,7 @@ description: "Use only when the main task is behavior-preserving cleanup or stru
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`

@@ -3,10 +3,11 @@
     "copilot-instructions.md",
     "instructions/docs-tasks.instructions.md",
     "instructions/wms-java.instructions.md",
-    "prompts/wms-auto-dev.prompt.md",
+    "prompts/wms-acd.prompt.md",
+    "prompts/wms-aod.prompt.md",
     "prompts/wms-evaluation-gate.prompt.md",
     "prompts/wms-link-trace.prompt.md",
-    "prompts/wms-plan-gate.prompt.md",
-    "prompts/wms-scene-router.prompt.md"
+    "prompts/wms-orchestrator.prompt.md",
+    "prompts/wms-tdd.prompt.md"
   ]
 }

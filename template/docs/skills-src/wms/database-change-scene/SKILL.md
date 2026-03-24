@@ -13,6 +13,7 @@ description: "Use only when schema change, SQL review, or data-fix planning is t
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`

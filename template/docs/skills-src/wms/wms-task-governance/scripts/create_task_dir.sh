@@ -78,13 +78,21 @@ if [[ -z "${task_name}" ]]; then
 fi
 
 repo_root="$(cd "$(dirname "$0")/../../../../.." && pwd)"
+git_username="$(git -C "${repo_root}" config user.name 2>/dev/null || true)"
+if [[ -z "${git_username}" ]]; then
+  git_username="unknown"
+fi
+if [[ "${owner}" == "待填写" ]]; then
+  owner="${git_username}"
+fi
 year="$(date +%Y)"
 month="$(date +%m)"
 today="$(date +%F)"
-now_datetime="$(date '+%F %H:%M')"
+now_datetime="$(date '+%F %H:%M:%S')"
 
 created_paths=()
 verified_paths=()
+readme_created=0
 
 copy_if_missing() {
   local src="$1"
@@ -97,6 +105,9 @@ copy_if_missing() {
 
   cp "${src}" "${dst}"
   created_paths+=("${dst}")
+  if [[ "${dst}" == */README.md ]]; then
+    readme_created=1
+  fi
 }
 
 render_placeholders() {
@@ -174,6 +185,14 @@ mkdir -p "${task_dir}/ai-conversations" "${task_dir}/artifacts"
 
 copy_if_missing "${readme_template}" "${task_dir}/README.md"
 render_placeholders "${task_dir}/README.md" "${default_purpose}"
+if [[ "${readme_created}" -eq 1 ]]; then
+  python3 \
+    "${repo_root}/docs/skills-src/wms/wms-task-governance/scripts/append_planning_marker.py" \
+    "${task_dir}/README.md" \
+    "${task_name}" \
+    --iteration 1 \
+    --user "${git_username}"
+fi
 
 copy_if_missing "${repo_root}/docs/tasks/_templates/BUSINESS_INSIGHT.md" "${task_dir}/business-insights.md"
 render_placeholders "${task_dir}/business-insights.md" "${default_purpose}"

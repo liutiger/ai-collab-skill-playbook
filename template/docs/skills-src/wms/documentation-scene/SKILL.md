@@ -14,6 +14,7 @@ description: "Use only when writing docs or capturing reusable knowledge is the 
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`

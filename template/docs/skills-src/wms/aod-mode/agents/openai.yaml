@@ -1,0 +1,3 @@
+display_name: AOD Mode
+short_description: Analysis-observation execution profile for evidence-first investigation.
+default_prompt: Use this mode when the task needs evidence collection, timeline reconstruction, and hypothesis narrowing before implementation.

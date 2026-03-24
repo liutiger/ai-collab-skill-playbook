@@ -25,41 +25,22 @@
 
 - 先遵守 `docs/guides/AI协作研发章程.md`，再执行本文件中的 Copilot 路由规则
 - 第一版试运行以 `docs/guides/AI协作试运行说明.md` 作为人类研发同学的最小上手入口
-- 先判断任务属于哪个场景，再进入对应阶段工作流
+- 默认由 `/wms-orchestrator` 自动判场景、选模式、定阶段、叠加方法
 - 涉及代码定位、调用链分析、影响评估时，默认顺序：`GitNexus > 局部 rg > 全项目搜索`
-- 高风险需求、边界不清改动、跨模块功能，默认先停在 `plan-gate`
+- 高风险需求、边界不清改动、跨模块功能，默认收敛到 ACD 风格确认
 - 涉及代码 / SQL / 配置改动时，完成前默认补一次 `evaluation-gate`
 - 每次任务尽量落到 `docs/tasks/{年份}/{MM}-{任务名}/`
 - 有复用价值的结论继续沉淀到 `docs/knowledge-base/`
 
-## 第一版试运行默认策略
+## 五层默认架构
 
-- 默认先进入 `/wms-scene-router` 做场景归类，再由 `12-scene-catalog.md` 提供专项检查，再决定下一步阶段入口
-- 用户表达不清、边界不清、跨模块、跨服务、涉及公共接口或核心链路时，默认先进入 `/wms-plan-gate`
-- 只有在目标、范围、方案和风险已明确后，才进入 `/wms-auto-dev`
-- 代码 / SQL / 配置改动完成后，默认进入 `/wms-evaluation-gate` 再决定是否允许完成
-- 默认把“会不会稳定使用”放在“会不会自动化很多”之前，不主动追求过度自动执行
+1. `Governance`：共享开始 / 结束合同
+2. `Orchestrator`：单一总控入口
+3. `Scene`：任务主场景检查包
+4. `Stage`：兼容阶段入口与评测门禁
+5. `Method`：可叠加的专项方法
 
-## 架构约束
-
-### 分层规则
-
-`Controller -> Service Impl -> Service Interface -> Datasource (Entity/Mapper)`
-
-- Web 层禁止直接调用 Mapper / DAO
-- 公共接口先在 `*-interface` 模块定义，再在 `*-service` 实现
-- 微服务间禁止直连数据库，必须通过 Feign
-
-### Query / Execute 分离
-
-- `*QueryService`：只读查询，不写数据
-- `*ExecuteService`：写操作 / 命令，不承担无关查询
-- 新建服务必须遵守此约定
-
-### 抵扣引擎高风险点
-
-- 修改抵扣逻辑前，先确认 `SkuSerialProcessor` 串行约束
-- 修改规则分发前，先看 `StoreHouseInventoryDeductionRuleFactory` 影响范围
+> `TDD / ACD / AOD` 属于 **Orchestrator 之下的执行模式**，不是第六层架构。
 
 ## 任务自动路由
 
@@ -67,13 +48,11 @@
 
 {{ROUTING_TABLE}}
 
-如果同时命中多个场景：
+如果同时命中多个信号：
 
-- 优先满足风险更高的工作流
-- 先用 `/wms-scene-router` 定一个主场景，再结合 `12-scene-catalog.md` 进入对应阶段入口
-- 若用户表达了“先出方案、确认后再做”，优先进入 `plan-gate` 风格
-- 若用户表达了“确认链路、有没有真正落盘/发消息”，优先进入 `link-trace` 风格
-- 若仍然不明确，先问最少的澄清问题，或先按 `plan-gate` 收敛
+- 先让 `/wms-orchestrator` 判一个主场景
+- 再决定当前模式是 TDD / ACD / AOD
+- 最后才决定是否叠加 `link-trace` 这类专项方法
 
 ## 推荐 slash prompts
 
@@ -83,9 +62,10 @@
 
 使用原则：
 
-- 默认先用 `/wms-scene-router` 定场景，再结合 `12-scene-catalog.md` 进入阶段入口
-- 场景不清或跨场景：优先用 `/wms-plan-gate`
-- 只有在满足章程中的人工确认要求后，才直接进入 `/wms-auto-dev`
+- 日常绝大多数任务默认先用 `/wms-orchestrator`
+- 只有当你明确知道当前任务必须固定在某种模式时，才直接用 `/wms-tdd`、`/wms-acd` 或 `/wms-aod`
+- 只有当你明确只想确认真实链路时，才直接用 `/wms-link-trace`
+- 涉及代码 / SQL / 配置改动时，完成前补用 `/wms-evaluation-gate`
 
 ## 路径级说明
 
@@ -99,16 +79,11 @@
 
 ```text
 #file:docs/prompts/00-department-standards.md
-#file:docs/prompts/0x-xxx.md
+#file:docs/prompts/15-governance-lifecycle-contract.md
+#file:docs/prompts/12-scene-catalog.md
+#file:docs/prompts/13-method-catalog.md
+#file:docs/prompts/14-mode-catalog.md
+#file:docs/prompts/16-governance-orchestrator.md
 
 [任务描述]
 ```
-
-其中：
-
-- `00-department-standards.md` 是每次都应带的兼容入口
-- `11-scene-router.md` 用于先判场景，再选阶段
-- `12-scene-catalog.md` 用于提供每个场景的专项检查点和默认产出物
-- `07-auto-dev-orchestration.md` 用于完整开发闭环
-- `08-link-confirmation.md` 用于链路确认与知识沉淀
-- `09-plan-gate.md` 用于先方案后实现

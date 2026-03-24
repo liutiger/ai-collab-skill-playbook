@@ -13,6 +13,7 @@ description: "Use only when the main job is incident investigation, containment,
 
 ## Always Pair With
 
+- `governance-orchestrator`
 - `wms-task-governance`
 - `gitnexus-code-navigation`
 - `auto-dev-orchestrator`
