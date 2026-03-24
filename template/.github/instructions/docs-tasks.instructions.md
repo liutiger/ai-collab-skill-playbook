@@ -9,6 +9,7 @@ applyTo: "docs/tasks/**/*.md,docs/knowledge-base/**/*.md,docs/reports/**/*.md"
 - 写完成前，确认完成标记格式和结果摘要都齐全
 - 本轮结论至少写清：范围、证据、风险、验证方式
 - 更新任务文档时，优先保持 `README.md`、`ai-conversations/`、`business-insights.md`、`artifacts/` 一致
+- 公开模板默认只演示纯 Skill / Copilot 路径，不要求额外维护额外状态文件
 - 链路确认优先沉淀到 `artifacts/link-trace.md`
 - 方案确认优先沉淀到 `artifacts/plan-gate.md`
 - 若结论可复用，补充 `docs/knowledge-base/` 的目标位置

@@ -6,17 +6,24 @@
 
 `AI协作研发章程 > AI协作试运行说明 > ai-workflow > docs/skills-src > .claude/skills/.github/prompts`
 
+> 公开模板不包含 `docs/ai-runtime/` 这类维护者运行时目录；默认只演示纯 Skill / Copilot 路径。
+
 ## 当前默认架构
 
-这套模板现在明确区分五层：
+这套模板按 **双轴五构件** 组织：
 
-- `governance`：共享开始 / 结束合同
+### Governance Axis
+
+- `charter`：总纲与边界
+- `governance contract`：共享开始 / 结束合同
+
+### Execution Axis
+
 - `orchestrator`：单一总控 Skill
-- `scene`：任务主场景检查包
-- `stage`：兼容阶段入口
-- `method`：可叠加的专项方法
+- `capability packs`：Scene / Strategy / Method / Gate / Policy
+- `adapters & tools`：生成器、Copilot 适配和任务脚本
 
-> `TDD / ACD / AOD` 属于 **Orchestrator 之下的执行模式**，不是新增架构层。
+> `TDD / ACD / AOD` 属于 **Capability Packs 里的 Strategy Packs**，不是默认外显入口。
 
 当前默认只保留以下主动运行 Skill：
 
@@ -43,8 +50,6 @@
 docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
   --owner "your-name" \
   --module "example-service" \
-  --plan-gate \
-  --evaluation-gate \
   "inventory-batch-rule"
 ```
 
@@ -53,24 +58,23 @@ docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
 - `README.md`
 - `business-insights.md`
 - `ai-conversations/01-任务启动.md` 或 `01-初步分析.md`
-- `artifacts/plan-gate.md` / `artifacts/link-trace.md`（按参数启用）
+- `artifacts/link-trace.md` / `artifacts/eval-plan.md` / `artifacts/eval-report.md`（按参数启用）
 - 新任务的第 1 次 `规划任务:` 标记
+
+默认不需要再手动拼 `plan-gate`/`auto-dev` 之类的阶段组合；日常由 `/wms-orchestrator` 自动判断当前三态和策略。
 
 ## Copilot 快速使用
 
 生成 Copilot 运行产物后，可在 VS Code Copilot Chat 中直接使用：
 
 - `/wms-orchestrator`
-- `/wms-tdd`
-- `/wms-acd`
-- `/wms-aod`
 - `/wms-link-trace`
 - `/wms-evaluation-gate`
 
 使用建议：
 
 - 日常默认先用 `/wms-orchestrator`
-- 只有当你明确要固定执行模式时，再用 `/wms-tdd`、`/wms-acd`、`/wms-aod`
+- 由 `/wms-orchestrator` 自动选择最合适的 Strategy Pack
 - 只有当你明确只想做专项方法时，再用 `/wms-link-trace`
 - 涉及代码 / SQL / 配置改动时，完成前补用 `/wms-evaluation-gate`
 

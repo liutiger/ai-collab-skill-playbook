@@ -41,6 +41,24 @@ def main() -> int:
 
     source_root = root / copilot["sourceRoot"]
     errors: list[str] = []
+    shared_refs = copilot.get("sharedRefs", [])
+    shared_requirements = copilot.get("sharedRequirements", [])
+
+    if len(shared_refs) < 2:
+        errors.append("copilot sharedRefs must contain at least 2 docs/prompts references")
+    for ref in shared_refs:
+        ref_path = root / ref
+        if not ref_path.exists():
+            errors.append(f"missing shared prompt ref: {ref}")
+        elif "docs/prompts/" not in ref:
+            errors.append(f"shared prompt ref must live under docs/prompts: {ref}")
+
+    if len(shared_requirements) < 2:
+        errors.append("copilot sharedRequirements must contain at least 2 lifecycle requirements")
+    if not any("规划任务" in item for item in shared_requirements):
+        errors.append("copilot sharedRequirements must mention planning marker / planning task")
+    if not any("继续检查文档" in item for item in shared_requirements):
+        errors.append("copilot sharedRequirements must mention default continue-check-document behavior")
 
     repo_source = source_root / copilot["repoInstructionsSource"]
     if not repo_source.exists():
@@ -67,6 +85,7 @@ def main() -> int:
 
     prompt_ids: set[str] = set()
     filenames: set[str] = set()
+    prompt_kinds: list[str] = []
     prompt_root = root / manifest["promptRoot"]
     for spec in copilot.get("promptFiles", []):
         if spec["id"] in prompt_ids:
@@ -79,6 +98,11 @@ def main() -> int:
         filenames.add(filename)
         if not filename.endswith(".prompt.md"):
             errors.append(f"copilot prompt must end with .prompt.md: {filename}")
+        kind = spec.get("kind")
+        if kind not in {"router", "gate", "method", "mode"}:
+            errors.append(f"{spec['id']}: kind must be one of router/gate/method/mode")
+        else:
+            prompt_kinds.append(kind)
         if not spec.get("description"):
             errors.append(f"{spec['id']}: description is required")
         if len(spec.get("triggers", [])) < 2:
@@ -92,6 +116,15 @@ def main() -> int:
                 errors.append(f"{spec['id']}: missing referenced prompt {ref}")
             elif not str((root / ref).relative_to(prompt_root.parent)).startswith("prompts/"):
                 errors.append(f"{spec['id']}: referenced file must live under docs/prompts: {ref}")
+
+    if prompt_kinds.count("router") != 1:
+        errors.append("copilot promptFiles must contain exactly 1 router prompt")
+    if "gate" not in prompt_kinds:
+        errors.append("copilot promptFiles must contain at least 1 gate prompt")
+    if "method" not in prompt_kinds:
+        errors.append("copilot promptFiles must contain at least 1 method prompt")
+    if "mode" in prompt_kinds:
+        errors.append("copilot promptFiles must not expose mode prompts by default; strategy packs stay internal to orchestrator")
 
     if errors:
         print("[FAIL] Copilot asset validation failed:")

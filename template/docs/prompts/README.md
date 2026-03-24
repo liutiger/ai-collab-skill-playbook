@@ -1,4 +1,4 @@
-# 五层治理骨架 + 单一总控 Skill 兼容体系（Public V2）
+# 双轴五构件 + 单一总控 Skill 兼容体系（Public V3）
 
 > 本目录是公开模板中的 Prompt 兼容入口。默认工作法以下方 Skill 源码与生成产物为准。
 
@@ -7,13 +7,15 @@
 - **章程层（总纲）**：`docs/guides/AI协作研发章程.md`
 - **Governance**：`00-department-standards.md` + `15-governance-lifecycle-contract.md`
 - **Orchestrator**：`16-governance-orchestrator.md`
-- **Scene**：`12-scene-catalog.md`，`01~06` 仅保留兼容入口
-- **Stage**：`07/09/10` 等兼容阶段入口
-- **Method**：`13-method-catalog.md`，`08` 是显式专项方法入口
+- **Capability Packs**：
+  - `12-scene-catalog.md`：Scene Packs
+  - `14-mode-catalog.md`：Strategy Packs
+  - `13-method-catalog.md`：Method Packs
+  - `10-evaluation-gate.md`：Gate Pack
 - **Skill 实现层**：`docs/skills-src/` 为源码，`.claude/skills/wms/` 为运行产物
 - **Copilot 适配层**：`.github/copilot-instructions.md`、`.github/instructions/`、`.github/prompts/` 由 `docs/skills-src/` 自动生成
 
-> `TDD / ACD / AOD` 是 **Orchestrator 之下的执行模式**，不是第六层架构。它们通过 `14-mode-catalog.md` 和 `17~19` 模式入口参与总控决策。
+> `TDD / ACD / AOD` 是 **Orchestrator 之下的 Strategy Packs**，不是默认外显入口。它们通过 `14-mode-catalog.md` 和 `17~19` 参与总控决策。
 
 ## Source Of Truth
 
@@ -37,16 +39,12 @@ python3 docs/skills-src/tools/acceptance_check.py
 如果你在 VS Code 中使用 GitHub Copilot Chat，默认优先使用这些 slash prompt：
 
 - `/wms-orchestrator`
-- `/wms-tdd`
-- `/wms-acd`
-- `/wms-aod`
 - `/wms-link-trace`
 - `/wms-evaluation-gate`
 
 使用建议：
 
 - 日常绝大多数任务先用 `/wms-orchestrator`
-- 只有当你明确知道当前任务必须固定在某种模式时，才直接进 `/wms-tdd`、`/wms-acd`、`/wms-aod`
 - 只有当你明确只想做链路确认时，才显式用 `/wms-link-trace`
 - 涉及代码 / SQL / 配置改动时，完成前补跑 `/wms-evaluation-gate`
 
@@ -65,9 +63,9 @@ python3 docs/skills-src/tools/acceptance_check.py
 [任务描述]
 ```
 
-### 模式入口
+### 策略参考入口
 
-当你明确要固定某种执行模式时，可直接进入：
+当你明确要固定某种执行策略时，可直接参考：
 
 - `00 + 15 + 14 + 17`：TDD
 - `00 + 15 + 14 + 18`：ACD
@@ -101,16 +99,16 @@ python3 docs/skills-src/tools/acceptance_check.py
 | 数据库变更兼容入口 | `04-database-change.md` |
 | 重构优化兼容入口 | `05-refactoring.md` |
 | 文档编写兼容入口 | `06-documentation.md` |
-| 多角色自动开发编排（兼容阶段入口） | `07-auto-dev-orchestration.md` |
+| 多角色自动开发编排（兼容实现入口） | `07-auto-dev-orchestration.md` |
 | 链路确认 / 知识沉淀 | `08-link-confirmation.md` |
-| 方案核对 / 实施前确认（兼容阶段入口） | `09-plan-gate.md` |
+| 方案核对 / 实施前确认（兼容方案入口） | `09-plan-gate.md` |
 | 自动评测 / 交付验收 | `10-evaluation-gate.md` |
 | 场景路由兼容入口 | `11-scene-router.md` |
 | 统一场景目录 | `12-scene-catalog.md` |
 | 统一专项方法目录 | `13-method-catalog.md` |
-| 统一执行模式目录 | `14-mode-catalog.md` |
+| 统一执行策略目录 | `14-mode-catalog.md` |
 | 共享治理生命周期合同 | `15-governance-lifecycle-contract.md` |
 | 治理总控默认入口 | `16-governance-orchestrator.md` |
-| TDD 模式 | `17-tdd-mode.md` |
-| ACD 模式 | `18-acd-mode.md` |
-| AOD 模式 | `19-aod-mode.md` |
+| TDD 策略参考 | `17-tdd-mode.md` |
+| ACD 策略参考 | `18-acd-mode.md` |
+| AOD 策略参考 | `19-aod-mode.md` |

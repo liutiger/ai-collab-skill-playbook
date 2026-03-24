@@ -2,8 +2,8 @@
   "id": "evaluation-gate-feature-delivery",
   "title": "功能开发后的评测门禁",
   "skills": [
+    "governance-orchestrator",
     "wms-task-governance",
-    "auto-dev-orchestrator",
     "delivery-evaluation-gate",
     "feature-dev-scene"
   ],

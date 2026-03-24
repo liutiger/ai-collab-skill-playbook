@@ -4,10 +4,10 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  create_task_dir.sh [--issue] [--owner "<name>"] [--branch "<branch>"] [--module "<module>"] [--plan-gate] [--link-trace] [--evaluation-gate] [--conversation-topic "<topic>"] "<task-name>"
+  create_task_dir.sh [--issue] [--owner "<name>"] [--branch "<branch>"] [--module "<module>"] [--link-trace] [--evaluation-gate] [--conversation-topic "<topic>"] "<task-name>"
 
 Examples:
-  create_task_dir.sh --owner "your-name" --module "example-service" --plan-gate --evaluation-gate "inventory-batch-fix"
+  create_task_dir.sh --owner "your-name" --module "example-service" "inventory-batch-fix"
   create_task_dir.sh --issue --owner "your-name" --module "example-service" --link-trace "outbound-status-mismatch"
 EOF
 }

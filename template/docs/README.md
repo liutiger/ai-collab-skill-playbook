@@ -17,3 +17,9 @@
 - `tasks/`：任务沉淀目录与模板
 - `knowledge-base/`：可复用知识沉淀区
 - `reports/`：验收与运行报告
+
+默认公开入口：
+
+- `/wms-orchestrator`
+- `/wms-link-trace`
+- `/wms-evaluation-gate`

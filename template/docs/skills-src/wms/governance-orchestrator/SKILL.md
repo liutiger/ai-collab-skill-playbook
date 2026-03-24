@@ -1,6 +1,6 @@
 ---
 name: governance-orchestrator
-description: "Use as the default WMS skill entry. It should classify scene, choose execution mode, decide stage, overlay specialized methods, batch hard-gate confirmations, and continue in the same thread without asking the user to switch prompts."
+description: "Use as the default WMS skill entry. It should classify scene, choose execution strategy, drive the DISCOVER / DELIVER / VERIFY states, overlay specialized methods, batch hard-gate confirmations, and continue in the same thread without asking the user to switch prompts."
 ---
 
 # Governance Orchestrator
@@ -9,7 +9,7 @@ description: "Use as the default WMS skill entry. It should classify scene, choo
 
 - 默认 WMS 任务入口
 - 用户只说目标、异常、Review、DDL、重构或文档需求，没有明确指定阶段
-- 希望在同一线程里自动完成“场景判定 -> 模式选择 -> 阶段推进 -> 待确认汇总 -> 继续执行”
+- 希望在同一线程里自动完成“场景判定 -> 策略选择 -> 三态推进 -> 待确认汇总 -> 继续执行”
 
 ## Pair With
 
@@ -39,5 +39,5 @@ description: "Use as the default WMS skill entry. It should classify scene, choo
 
 - 不要要求用户在同一条任务链里频繁切换 prompt
 - 不要把多个 hard gate 拆成多轮零碎追问
-- 不要在高风险、边界不清或存在方案取舍时直接进入实现
+- 不要在高风险、边界不清或存在方案取舍时直接离开 DISCOVER
 - 不要在未过评测门禁时默认任务可以完成

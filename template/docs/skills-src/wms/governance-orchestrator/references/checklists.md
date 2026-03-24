@@ -1,6 +1,6 @@
 # Governance Orchestrator Checklist
 
-- 已先判场景，再判模式，再判阶段
+- 已先判场景，再判策略，再判三态
 - 已明确是否需要叠加专项方法
 - 若存在 hard gate，已一次性汇总，而不是零碎追问
 - 用户回复后可沿当前总控继续，不要求切换 prompt

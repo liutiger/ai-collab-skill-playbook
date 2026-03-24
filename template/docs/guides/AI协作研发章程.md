@@ -24,22 +24,19 @@
 - 任务沉淀目录：`docs/tasks/`
 - 长期知识库：`docs/knowledge-base/`
 
-### 1.1 治理层级
+### 1.1 治理引用顺序
 
-本项目所有 AI 研发协作资产遵循以下治理层级：
+本项目所有 AI 研发协作资产遵循以下引用顺序：
 
-1. `AI协作研发章程`：总纲，定义定位、边界、原则和控制要求
-2. `AI 工作流与指南`：把章程落实成团队标准流程
-3. `五层工作骨架`：
-   - `Governance`
-   - `Orchestrator`
-   - `Scene`
-   - `Stage`
-   - `Method`
-4. `Skill / Prompt / Copilot 适配层`：把工作方法适配到具体工具入口
+1. `AI协作研发章程`：总纲，定义定位、边界、原则和完成标准
+2. `AI 工作流与试运行说明`：把章程落实成团队标准用法
+3. `docs/skills-src/`：Skill 源码与生成规范
+4. `Prompt / Copilot slash prompt / IDE 适配层`：把工作方法适配到具体工具入口
 5. `单次任务输入`：描述这次任务的目标、范围和约束
 
-> `TDD / ACD / AOD` 是 **Orchestrator 之下的执行模式**，不是新增架构层级。
+这 5 项是治理引用顺序，不是另一套独立架构。真正的运行架构定义，以后文的 **双轴五构件** 为准。
+
+> `TDD / ACD / AOD` 是 **Orchestrator 之下的 Strategy Packs**，不是新增架构层级。
 
 任何 Skill、Prompt、Copilot 适配层都不得脱离本章程单独演化；若与本章程冲突，以本章程为准。
 
@@ -126,15 +123,27 @@ Knowledge Sink 指任务过程中必须写入的沉淀位置，包括：
 - `artifacts/`
 - `AGENTS.md`（项目级共识）
 
-### 4.6 Mode
+### 4.6 双轴五构件
 
-Mode 指挂在 `Orchestrator` 之下的执行剖面，用来决定这轮更适合怎样推进。
+为避免能力在“统一收敛”时被错误吞并，本模板把 AI 协作体系定义成 **双轴五构件**，而不是“很多层并排堆叠”的模型。
 
-本模板当前默认提供：
+#### Governance Axis
 
-- `TDD`：测试驱动交付
-- `ACD`：架构确认驱动
-- `AOD`：分析观察驱动
+- `Charter`：总纲，定义定位、边界、原则和完成标准
+- `Governance Contract`：共享生命周期合同，例如规划标记、结束前确认、多轮补充检查
+
+#### Execution Axis
+
+- `Orchestrator`：默认总控入口，统一判主场景、选择执行策略、推进 `DISCOVER / DELIVER / VERIFY` 三态，并按需叠加专项方法
+- `Capability Packs`：按能力维度组织的事实来源，包括 `Scene Packs`、`Strategy Packs`、`Method Packs`、`Gate Packs`
+- `Adapters & Tools`：把工作法适配到 Copilot / Skill 运行产物、任务初始化脚本和生成验收工具
+
+其中：
+
+- `Scene Packs` 负责回答“这次任务属于什么类型”
+- `Strategy Packs` 负责回答“这轮怎么推进”，`TDD / ACD / AOD` 就属于这一类
+- `Method Packs` 负责回答“是否要叠加专项工作方法”，例如链路确认
+- `Gate Packs` 负责回答“是否允许进入验证或完成”，例如评测门禁
 
 ---
 

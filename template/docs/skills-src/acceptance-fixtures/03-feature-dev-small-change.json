@@ -2,23 +2,21 @@
   "id": "feature-dev-small-change",
   "title": "小功能新增走完整闭环",
   "skills": [
+    "governance-orchestrator",
     "wms-task-governance",
     "gitnexus-code-navigation",
-    "plan-gate",
-    "auto-dev-orchestrator",
     "delivery-evaluation-gate",
     "feature-dev-scene"
   ],
-  "prompt": "新增一个仓库批次操作查询接口，先确认 Query/Execute 分层和 Feign 影响，然后再进入实现、自检和评测门禁。",
+  "prompt": "新增一个仓库批次操作查询接口，默认先由总控判场景、策略和三态，再确认 Query/Execute 分层和 Feign 影响，最后进入实现、自检和评测门禁。",
   "expectedFocus": [
-    "先方案后实现",
+    "默认由总控先做 DISCOVER 再决定是否进入 DELIVER",
     "检查 Query/Execute 分层归属",
     "补齐验证、评测门禁和落盘要求",
     "最终进入实现、自检、评测、沉淀闭环"
   ],
   "expectedArtifacts": [
     "docs/tasks/{年份}/{MM}-任务名/README.md",
-    "artifacts/plan-gate.md",
     "artifacts/eval-report.md",
     "ai-conversations/01-任务启动.md"
   ]

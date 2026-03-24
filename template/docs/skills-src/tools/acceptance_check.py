@@ -61,13 +61,13 @@ def main() -> int:
         for skill in manifest["skills"]
         if skill["type"] == "scene"
     )
-    mode_exposures_ok = all(
+    strategy_exposures_ok = all(
         skill.get("runtimeExposure") == "source-only"
         for skill in manifest["skills"]
-        if skill["type"] == "mode"
+        if skill["type"] == "strategy"
     )
     checks.append(("scene_runtime_exposure", scene_exposures_ok, "scene skills stay source-only"))
-    checks.append(("mode_runtime_exposure", mode_exposures_ok, "mode skills stay source-only"))
+    checks.append(("strategy_runtime_exposure", strategy_exposures_ok, "strategy packs stay source-only"))
 
     for skill_meta in manifest["skills"]:
         prompt_hits = []
@@ -110,6 +110,10 @@ def main() -> int:
     repo_text = repo_instructions_path.read_text(encoding="utf-8") if repo_instructions_path.exists() else ""
     shared_refs = copilot.get("sharedRefs", [])
     shared_requirements = copilot.get("sharedRequirements", [])
+    docs_tasks_instruction_path = copilot_target_root / "instructions/docs-tasks.instructions.md"
+    docs_tasks_instruction_text = (
+        docs_tasks_instruction_path.read_text(encoding="utf-8") if docs_tasks_instruction_path.exists() else ""
+    )
 
     checks.append(("copilot_repo_instructions_exists", repo_instructions_path.exists(), str(repo_instructions_path.relative_to(root))))
     checks.append(
@@ -133,6 +137,14 @@ def main() -> int:
             and any("规划任务" in item for item in shared_requirements)
             and any("继续检查文档" in item for item in shared_requirements),
             "copilot manifest declares shared lifecycle refs and requirements",
+        )
+    )
+    checks.append(
+        (
+            "runtime_not_in_default_paths",
+            "纯 Skill / Copilot 路径" in docs_tasks_instruction_text
+            and "额外状态文件" in docs_tasks_instruction_text,
+            "public template keeps runtime concepts out of default docs instructions",
         )
     )
 
@@ -161,7 +173,7 @@ def main() -> int:
     checks.append(
         (
             "mode_catalog_exists",
-            mode_catalog_path.exists() and "Mode 1" in mode_catalog_text and "Mode 3" in mode_catalog_text,
+            mode_catalog_path.exists() and "Strategy 1" in mode_catalog_text and "Strategy 3" in mode_catalog_text,
             str(mode_catalog_path.relative_to(root)),
         )
     )
@@ -177,9 +189,10 @@ def main() -> int:
             and "14-mode-catalog.md" in orchestrator_text
             and "16-governance-orchestrator.md" in orchestrator_text
             and "/wms-orchestrator" in repo_text
+            and "DISCOVER / DELIVER / VERIFY" in orchestrator_text
             and "同一线程" in orchestrator_text
             and "一次性汇总" in orchestrator_text,
-            "orchestrator prompt loads governance/scene/method/mode catalogs and exposes the single default entry",
+            "orchestrator prompt loads governance/scene/method/strategy catalogs and exposes the single default entry",
         )
     )
 
@@ -188,7 +201,10 @@ def main() -> int:
             "copilot_no_legacy_default_prompts",
             not (copilot_target_root / "prompts/wms-scene-router.prompt.md").exists()
             and not (copilot_target_root / "prompts/wms-plan-gate.prompt.md").exists()
-            and not (copilot_target_root / "prompts/wms-auto-dev.prompt.md").exists(),
+            and not (copilot_target_root / "prompts/wms-auto-dev.prompt.md").exists()
+            and not (copilot_target_root / "prompts/wms-tdd.prompt.md").exists()
+            and not (copilot_target_root / "prompts/wms-acd.prompt.md").exists()
+            and not (copilot_target_root / "prompts/wms-aod.prompt.md").exists(),
             "legacy public default prompts were removed from generated Copilot assets",
         )
     )
@@ -218,23 +234,16 @@ def main() -> int:
         )
     )
 
-    mode_prompt_expectations = {
-        "wms-tdd.prompt.md": ("17-tdd-mode.md", "14-mode-catalog.md", "测试"),
-        "wms-acd.prompt.md": ("18-acd-mode.md", "14-mode-catalog.md", "架构"),
-        "wms-aod.prompt.md": ("19-aod-mode.md", "14-mode-catalog.md", "证据"),
-    }
-    for filename, (mode_ref, catalog_ref, keyword) in mode_prompt_expectations.items():
-        text = (copilot_target_root / "prompts" / filename).read_text(encoding="utf-8")
-        checks.append(
-            (
-                f"mode_prompt_{filename}",
-                "15-governance-lifecycle-contract.md" in text
-                and catalog_ref in text
-                and mode_ref in text
-                and keyword in text,
-                filename,
-            )
+    checks.append(
+        (
+            "strategy_packs_stay_internal",
+            "/wms-tdd" not in repo_text
+            and "/wms-acd" not in repo_text
+            and "/wms-aod" not in repo_text
+            and "Strategy Packs" in repo_text,
+            "strategy packs are described as internal orchestrator choices, not default slash prompts",
         )
+    )
 
     all_prompt_texts = []
     for prompt_filename in expected_prompt_files:

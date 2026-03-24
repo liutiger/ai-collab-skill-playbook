@@ -33,7 +33,7 @@
         "id": "wms-orchestrator",
         "kind": "router",
         "filename": "prompts/wms-orchestrator.prompt.md",
-        "description": "WMS 单一总控入口：自动判定场景、执行模式、当前阶段和专项方法，默认在同一线程里先收敛、再实现、再验收",
+        "description": "WMS 单一总控入口：自动判定场景、选择执行策略、推进 DISCOVER / DELIVER / VERIFY 三态，并按需叠加专项方法",
         "triggers": [
           "新增功能",
           "线上异常",
@@ -51,15 +51,15 @@
           "docs/prompts/16-governance-orchestrator.md"
         ],
         "requirements": [
-          "默认先用统一场景目录判主场景，再结合模式目录选择 TDD / ACD / AOD 中最合适的执行模式",
-          "高风险、跨模块、公共接口或方案存在取舍时，自动收敛到 ACD 风格的方案确认，不直接进入实现",
-          "若任务以证据链、日志、链路、副作用为主，自动切到 AOD 风格的分析补证；若目标明确且验收可测试，优先采用 TDD 风格",
+          "默认先用统一场景目录判主场景，再结合策略目录选择 TDD / ACD / AOD 中最合适的推进策略",
+          "对用户只暴露 DISCOVER / DELIVER / VERIFY 三态，不要求用户理解内部阶段切换细节",
+          "高风险、跨模块、公共接口或方案存在取舍时，自动收敛到 ACD 风格的 DISCOVER；若任务以证据链、日志、链路、副作用为主，自动切到 AOD 风格；若目标明确且验收可测试，优先采用 TDD 风格",
           "若存在必须确认的阻塞点，必须一次性汇总全部 hard gate；用户在同一线程答复后沿当前总控继续，不要求切换到别的 prompt"
         ]
       },
       {
         "id": "wms-evaluation-gate",
-        "kind": "stage",
+        "kind": "gate",
         "filename": "prompts/wms-evaluation-gate.prompt.md",
         "description": "WMS 自动评测与交付验收门禁：确定评测范围、执行必要门禁、输出结构化评测结论，并决定是否允许完成",
         "triggers": [
@@ -98,72 +98,6 @@
           "以真实代码顺序列出主链路和关键分支",
           "区分 DB 写入、MQ、Feign 等副作用",
           "把结果写入 docs/tasks 对应任务目录的 artifacts/link-trace.md"
-        ]
-      },
-      {
-        "id": "wms-tdd",
-        "kind": "mode",
-        "filename": "prompts/wms-tdd.prompt.md",
-        "description": "WMS 模式入口：TDD（测试驱动交付），先收敛验收标准与失败测试，再做最小实现和回归验证",
-        "triggers": [
-          "TDD",
-          "测试驱动",
-          "先写测试",
-          "先红后绿"
-        ],
-        "refs": [
-          "docs/prompts/14-mode-catalog.md",
-          "docs/prompts/17-tdd-mode.md"
-        ],
-        "requirements": [
-          "把当前任务固定在 TDD 模式，不再重新猜测模式",
-          "先把验收标准转成可验证的测试或断言，再决定最小改动范围",
-          "优先列出要新增或修改的测试点、失败信号和最小实现路径",
-          "若中途出现高风险架构取舍，回退到 ACD 风格确认；若证据不足，补充 AOD 式分析后再继续"
-        ]
-      },
-      {
-        "id": "wms-acd",
-        "kind": "mode",
-        "filename": "prompts/wms-acd.prompt.md",
-        "description": "WMS 模式入口：ACD（架构确认驱动），先收敛边界、方案与接口，再决定是否进入实现",
-        "triggers": [
-          "ACD",
-          "架构确认",
-          "先确认方案",
-          "跨模块方案"
-        ],
-        "refs": [
-          "docs/prompts/14-mode-catalog.md",
-          "docs/prompts/18-acd-mode.md"
-        ],
-        "requirements": [
-          "把当前任务固定在 ACD 模式，不直接进入实现闭环",
-          "先明确边界、约束、候选方案、取舍理由和回滚思路",
-          "涉及公共接口、数据库结构、跨模块或跨服务联动时，优先按 ACD 收敛",
-          "若方案已清楚且测试路径明确，可转入 TDD；若证据还不够，先补 AOD 式分析"
-        ]
-      },
-      {
-        "id": "wms-aod",
-        "kind": "mode",
-        "filename": "prompts/wms-aod.prompt.md",
-        "description": "WMS 模式入口：AOD（分析观察驱动），先补证、看日志、做链路和假设收敛，再决定是否修复",
-        "triggers": [
-          "AOD",
-          "先分析再动手",
-          "证据链",
-          "先排查补证"
-        ],
-        "refs": [
-          "docs/prompts/14-mode-catalog.md",
-          "docs/prompts/19-aod-mode.md"
-        ],
-        "requirements": [
-          "把当前任务固定在 AOD 模式，优先做证据盘点、链路观察和假设收敛",
-          "先明确已知证据、缺失证据、下一步验证动作和止血建议，不把猜测写成结论",
-          "适合线上排障、数据不一致、链路不清或用户只给现象不给明确需求的任务",
-          "若边界和方案已经收敛，可切到 ACD；若验收可测试且允许实现，可切到 TDD"
         ]
       }
     ]
@@ -216,7 +150,7 @@
       "expectedScripts": [],
       "expectedAssets": [],
       "positiveExamples": [
-        "新增一个仓库功能，先自动判断场景和阶段，再在同一线程继续推进",
+        "新增一个仓库功能，先自动判断场景和三态，再在同一线程继续推进",
         "线上问题排查，遇到待确认项时一次性汇总，让我确认后继续往下做"
       ],
       "negativeExamples": [
@@ -485,7 +419,7 @@
     },
     {
       "id": "tdd-mode",
-      "type": "mode",
+      "type": "strategy",
       "compatPrompts": [
         "14-mode-catalog.md",
         "17-tdd-mode.md"
@@ -503,7 +437,7 @@
     },
     {
       "id": "acd-mode",
-      "type": "mode",
+      "type": "strategy",
       "compatPrompts": [
         "14-mode-catalog.md",
         "18-acd-mode.md"
@@ -515,13 +449,13 @@
         "涉及公共契约，先确认方案和回滚，不直接实现"
       ],
       "negativeExamples": [
-        "只是补一个小断言，不需要走架构确认模式"
+        "只是补一个小断言，不需要走架构确认策略"
       ],
       "runtimeExposure": "source-only"
     },
     {
       "id": "aod-mode",
-      "type": "mode",
+      "type": "strategy",
       "compatPrompts": [
         "14-mode-catalog.md",
         "19-aod-mode.md"

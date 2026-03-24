@@ -18,8 +18,6 @@
 ./docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
   --owner "{姓名}" \
   --module "{模块}" \
-  --plan-gate \
-  --evaluation-gate \
   "{任务名}"
 ```
 
@@ -32,8 +30,8 @@
 总控会依次完成：
 
 1. 先判场景
-2. 再选执行模式（TDD / ACD / AOD）
-3. 再决定当前阶段
+2. 再选执行策略（TDD / ACD / AOD）
+3. 再决定当前三态（DISCOVER / DELIVER / VERIFY）
 4. 必要时叠加专项方法
 5. 遇到 hard gate 时一次性汇总确认项
 
@@ -42,12 +40,17 @@
 - 链路确认：`/wms-link-trace`
 - 交付评测：`/wms-evaluation-gate`
 
-## 五层架构
+## 双轴五构件
 
-1. `Governance`
-2. `Orchestrator`
-3. `Scene`
-4. `Stage`
-5. `Method`
+### Governance Axis
 
-> `TDD / ACD / AOD` 是 Orchestrator 之下的执行模式，不是第六层。
+1. `Charter`
+2. `Governance Contract`
+
+### Execution Axis
+
+3. `Orchestrator`
+4. `Capability Packs`
+5. `Adapters & Tools`
+
+> `Scene / Strategy / Method / Gate` 都属于 Capability Packs；`TDD / ACD / AOD` 是其中的 Strategy Packs。

@@ -29,8 +29,6 @@ docs/tasks/
 ./docs/skills-src/wms/wms-task-governance/scripts/create_task_dir.sh \
   --owner "{姓名}" \
   --module "{模块}" \
-  --plan-gate \
-  --evaluation-gate \
   "{任务名}"
 ```
 
@@ -48,6 +46,7 @@ docs/tasks/
 ## 使用建议
 
 - `create_task_dir.sh` 是推荐入口，会自动初始化 `README.md`、`business-insights.md`、`ai-conversations/`、`artifacts/`
-- 涉及代码 / SQL / 配置改动时，建议一开始就带 `--evaluation-gate`
+- 涉及代码 / SQL / 配置改动时，建议按需带上 `--evaluation-gate`
+- 只想预创建链路沉淀文件时，可带 `--link-trace`
 - `_templates/` 保留为底层模板，不建议再手工 `mkdir + cp`
 - 关键结论优先沉淀到任务目录，再视情况提炼到 `docs/knowledge-base/`

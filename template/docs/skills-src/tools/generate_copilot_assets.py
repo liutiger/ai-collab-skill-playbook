@@ -26,7 +26,7 @@ def render_markdown_table(headers: list[str], rows: list[list[str]]) -> str:
 def prompt_kind_label(kind: str) -> str:
     return {
         "router": "总控",
-        "stage": "阶段",
+        "gate": "门禁",
         "method": "专项方法",
         "mode": "模式",
     }.get(kind, kind)
@@ -51,7 +51,7 @@ def render_prompt_table(prompt_specs: list[dict], shared_refs: list[str]) -> str
     rows = []
     for spec in prompt_specs:
         command = f"`/{spec['id']}`"
-        kind = prompt_kind_label(spec.get("kind", "stage"))
+        kind = prompt_kind_label(spec.get("kind", "gate"))
         desc = spec["description"]
         refs = " + ".join(f"`{Path(ref).name}`" for ref in dedupe_preserve_order([*shared_refs, *spec["refs"]]))
         rows.append([kind, command, desc, refs])
@@ -63,7 +63,7 @@ def render_routing_table(prompt_specs: list[dict]) -> str:
     for spec in prompt_specs:
         trigger_text = " / ".join(f"`{item}`" for item in spec["triggers"])
         route_text = f"`/{spec['id']}`"
-        kind = prompt_kind_label(spec.get("kind", "stage"))
+        kind = prompt_kind_label(spec.get("kind", "gate"))
         rows.append([kind, trigger_text, route_text, spec["description"]])
     return render_markdown_table(["分类", "用户信号", "优先工作流", "说明"], rows)
 

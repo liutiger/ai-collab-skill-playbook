@@ -6,14 +6,13 @@
 2. 如涉及代码，先确认 GitNexus 是否可用
 3. 检查是否已有任务目录
 4. 若无任务目录，优先使用 `scripts/create_task_dir.sh`
-5. 需要方案确认时，加 `--plan-gate`
-6. 需要链路沉淀时，加 `--link-trace`
-7. 需要交付评测门禁时，加 `--evaluation-gate`
-8. 启动后至少应具备：
+5. 需要链路沉淀时，加 `--link-trace`
+6. 需要交付评测门禁时，加 `--evaluation-gate`
+7. 启动后至少应具备：
    - `README.md`
    - `business-insights.md`
    - `ai-conversations/01-任务启动.md` 或 `01-初步分析.md`
-   - `artifacts/plan-gate.md` / `artifacts/link-trace.md` / `artifacts/eval-plan.md` / `artifacts/eval-report.md`（如适用）
+   - `artifacts/link-trace.md` / `artifacts/eval-plan.md` / `artifacts/eval-report.md`（如适用）
 
 ## 续做
 
